@@ -11,7 +11,7 @@ export function renderProgressDashboard(state) {
     KOCH_ORDER.split('').forEach(char => {
         const stats = state.stats[char];
         const item = document.createElement('div');
-        item.className = 'glass no-screws';
+        item.className = 'glass btn-rugged-glass';
         item.style.height = '75px';
         item.style.display = 'flex';
         item.style.flexDirection = 'column';

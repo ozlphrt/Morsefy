@@ -18,21 +18,26 @@
     <main id="screen-home" class="screen active">
       <header style="margin-bottom: 40px; margin-top: 20px;">
         <h1>MORSEFY</h1>
-        <p class="text-muted" style="margin-top: 0;">RX/TX TRAINING M01</p>
+        <p class="text-muted" style="margin-top: 0; letter-spacing: 2px;">RX/TX TRAINING M01</p>
       </header>
 
       <section class="glass fade-in" style="padding: 24px; margin-bottom: 24px; border-radius: 8px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <h2 id="home-streak"
-            style="font-size: 2rem; color: var(--accent-primary); text-shadow: 0 0 8px rgba(255,183,0,0.5);">0 SEQ</h2>
+            style="font-size: 2rem; color: var(--accent-primary); text-shadow: 0 0 8px rgba(255,170,51,0.5); font-weight: bold; font-family: var(--font-main);">
+            0 SEQ</h2>
           <div id="home-xp"
-            style="font-size: 1.5rem; font-weight: bold; color: var(--accent-danger); text-shadow: 0 0 8px rgba(255,51,0,0.5);">
+            style="font-size: 2rem; font-weight: bold; color: var(--accent-primary); text-shadow: 0 0 8px rgba(255,170,51,0.5); font-family: var(--font-main);">
             0 XP</div>
         </div>
         <div
-          style="height: 16px; background: #0a0a09; border: 1px solid #000; box-shadow: inset 0 2px 4px rgba(0,0,0,0.9); border-radius: 4px; overflow: hidden;">
+          style="height: 24px; background: #0a0a09; border: 1px solid #000; box-shadow: inset 0 2px 6px rgba(0,0,0,0.9); border-radius: 12px; overflow: hidden; position: relative;">
           <div id="home-progress-bar"
-            style="width: 0%; height: 100%; border-radius: 3px; box-shadow: 0 0 10px rgba(255,183,0,0.6); background-color: var(--accent-primary); background-image: repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(0,0,0,0.8) 10px, rgba(0,0,0,0.8) 20px); transition: width 0.5s ease;">
+            style="width: 0%; height: 100%; box-shadow: 0 0 15px rgba(255,170,51,0.6); background-color: var(--accent-primary); transition: width 0.5s ease; position: relative; z-index: 1;">
+          </div>
+          <!-- LED Segment Overlay -->
+          <div
+            style="position: absolute; top:0; left:0; right:0; bottom:0; z-index:2; background-image: repeating-linear-gradient(to right, transparent 0px, transparent 16px, #0a0a09 16px, #0a0a09 20px);">
           </div>
         </div>
         <p id="home-progress-text" class="text-muted" style="margin-top: 12px;">CHAR 2/40 • LVL 1</p>
