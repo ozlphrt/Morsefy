@@ -38,20 +38,31 @@
 
 body {
   background-color: var(--bg-primary);
-  /* Photorealistic Classic Diamond Plate - Finer & Less Contrasty with Strong Lighting */
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.2'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='b'%3E%3Cpath d='M 1 -13 C 6 -4, 6 4, 1 15 C -4 4, -4 -4, 1 -13 Z' fill='rgba(0,0,0,0.35)'/%3E%3Cpath d='M 0 -15 C 4 -5, 4 5, 0 15 C -4 5, -4 -5, 0 -15 Z' fill='rgba(35,40,45,0.5)'/%3E%3Cpath d='M 0 -15 C -4 -5, -4 5, 0 15 C -2 5, -2 -5, 0 -13 Z' fill='rgba(255,255,255,0.1)'/%3E%3C/g%3E%3Cuse href='%23b' x='10' y='10' transform='rotate(45 10 10)'/%3E%3Cuse href='%23b' x='30' y='30' transform='rotate(-45 30 30)'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(0, 0, 0, 0.8) 100%),
-    linear-gradient(to bottom, #2a333a, #080a0c);
-  background-size: 100% 100%, 18px 18px, 100% 100%, 100% 100%;
-  background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-main);
   line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  /* Photorealistic Classic Diamond Plate - Finer & Less Contrasty with Strong Lighting */
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.2'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='b'%3E%3Cpath d='M 1 -13 C 6 -4, 6 4, 1 15 C -4 4, -4 -4, 1 -13 Z' fill='rgba(0,0,0,0.35)'/%3E%3Cpath d='M 0 -15 C 4 -5, 4 5, 0 15 C -4 5, -4 -5, 0 -15 Z' fill='rgba(35,40,45,0.5)'/%3E%3Cpath d='M 0 -15 C -4 -5, -4 5, 0 15 C -2 5, -2 -5, 0 -13 Z' fill='rgba(255,255,255,0.1)'/%3E%3C/g%3E%3Cuse href='%23b' x='10' y='10' transform='rotate(45 10 10)'/%3E%3Cuse href='%23b' x='30' y='30' transform='rotate(-45 30 30)'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(0, 0, 0, 0.8) 100%),
+    linear-gradient(to bottom, #2a333a, #080a0c);
+  background-size: 100px 100px, 18px 18px, 100vw 100vh, 100vw 100vh;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
 }
 
 #app {
