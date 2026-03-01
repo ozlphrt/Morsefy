@@ -1,7 +1,7 @@
 :root {
-  --bg-primary: #0a0f08;
-  --bg-secondary: #0f140c;
-  --bg-tertiary: #131a10;
+  --bg-primary: #1f261d;
+  --bg-secondary: #262e24;
+  --bg-tertiary: #2a3328;
 
   --accent-primary: #e6a800;
   --accent-secondary: #dcded3;
@@ -13,9 +13,9 @@
   --text-secondary: #b5b1a1;
   --text-muted: #8a8b7c;
 
-  --glass-bg: #12180f;
-  --glass-border: #0a0d08;
-  --glass-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.8), inset -1px -1px 2px rgba(255, 255, 255, 0.05), 0 2px 0 rgba(255, 255, 255, 0.05);
+  --glass-bg: #222920;
+  --glass-border: #141a12;
+  --glass-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.6), inset -1px -1px 2px rgba(255, 255, 255, 0.05), 0 4px 10px rgba(0, 0, 0, 0.7);
 
   --font-main: 'VT323', monospace;
   --transition-fast: 0.1s ease;
@@ -53,10 +53,31 @@ body {
   background: var(--glass-bg);
   border: 2px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  border-radius: 8px;
+  border-radius: 4px;
   position: relative;
   overflow: hidden;
   transition: transform var(--transition-fast), border var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* Rugged Bolts in Corners */
+.glass::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  left: 6px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 0 0, #333 3px, transparent 4px),
+    radial-gradient(circle at 100% 0, #333 3px, transparent 4px),
+    radial-gradient(circle at 0 100%, #333 3px, transparent 4px),
+    radial-gradient(circle at 100% 100%, #333 3px, transparent 4px),
+    radial-gradient(circle at 0 0, #111 4px, transparent 5px),
+    radial-gradient(circle at 100% 0, #111 4px, transparent 5px),
+    radial-gradient(circle at 0 100%, #111 4px, transparent 5px),
+    radial-gradient(circle at 100% 100%, #111 4px, transparent 5px);
+  z-index: 10;
 }
 
 .glass::before {
@@ -66,13 +87,13 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
   z-index: -1;
   pointer-events: none;
 }
 
 .glass:hover {
-  border: 2px solid #1a1c17;
+  border: 2px solid #2a3328;
 }
 
 /* Animations */
@@ -222,12 +243,12 @@ h2 {
 /* Buttons */
 button {
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 16px 24px;
   font-size: 2rem;
   font-family: var(--font-main);
   transition: all var(--transition-fast);
-  background: linear-gradient(to bottom, #4a4e41, #2d3028);
+  background: linear-gradient(to bottom, #505545, #35382e);
   color: var(--text-primary);
   border: 2px solid var(--glass-border);
   display: flex;
@@ -237,10 +258,26 @@ button {
   box-shadow: 0 6px 0 var(--glass-border), 0 8px 15px rgba(0, 0, 0, 0.5), inset 0 2px 2px rgba(255, 255, 255, 0.1);
   text-shadow: -1px -1px 0 #000;
   text-transform: uppercase;
+  position: relative;
+}
+
+button::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 0 0, #222 2px, transparent 3px),
+    radial-gradient(circle at 100% 0, #222 2px, transparent 3px),
+    radial-gradient(circle at 0 100%, #222 2px, transparent 3px),
+    radial-gradient(circle at 100% 100%, #222 2px, transparent 3px);
 }
 
 button:hover {
-  background: linear-gradient(to bottom, #565a4c, #35382f);
+  background: linear-gradient(to bottom, #5c6250, #3e4236);
 }
 
 button:active {
