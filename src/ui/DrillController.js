@@ -93,11 +93,15 @@ export class DrillController {
         this.renderChoices(targetChar);
 
         // Fetch settings from state manager
-        const { wpm, farnsworth } = this.sm.state.settings;
+        const { wpm, farnsworth, lightFlashOn } = this.sm.state.settings;
 
-        // Play audio with reactive TX lamp feedback
-        morseEngine.onSignalStart = () => this.ui.visualizer.classList.add('playing');
-        morseEngine.onSignalEnd = () => this.ui.visualizer.classList.remove('playing');
+        // Play audio with conditional reactive TX lamp feedback
+        morseEngine.onSignalStart = () => {
+            if (lightFlashOn) this.ui.visualizer.classList.add('playing');
+        };
+        morseEngine.onSignalEnd = () => {
+            this.ui.visualizer.classList.remove('playing');
+        };
 
         await morseEngine.playCharacter(targetChar, wpm, farnsworth);
 
