@@ -496,12 +496,49 @@ button.secondary:hover {
 
 #btn-start-drill::before,
 #btn-start-drill::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 30px;
+  background: #111315;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.9), 0 1px 1px rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  pointer-events: none;
   animation: tactical-pulse-green 2.5s ease-in-out infinite;
+}
+
+#btn-start-drill::before {
+  left: 16px;
+}
+
+#btn-start-drill::after {
+  right: 16px;
 }
 
 #btn-exit-drill::before,
 #btn-exit-drill::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 24px;
+  background: #111315;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.9), 0 1px 1px rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  pointer-events: none;
   animation: tactical-pulse-red-light 2.5s ease-in-out infinite;
+  z-index: 5;
+}
+
+#btn-exit-drill::before {
+  left: 12px;
+}
+
+#btn-exit-drill::after {
+  right: 12px;
 }
 
 @keyframes tactical-pulse-red {

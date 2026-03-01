@@ -205,43 +205,44 @@ export class DrillController {
         const closeBtn = document.getElementById('modal-btn-close');
 
         if (evaluation.status === 'unlocked') {
-            title.textContent = "New Level Unlocked!";
+            title.innerHTML = `<span class="modal-px-header" style="color: var(--accent-success);">LEVEL UP</span>`;
             body.innerHTML = `
-                <div style="font-size: 6rem; margin-bottom: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary);">${evaluation.char}</div>
-                <div style="margin-bottom: 20px;">
-                    <div style="font-size: 0.9rem; color: var(--text-muted);">NEW CHARACTER ADDED</div>
-                    <p>You mastered the current set! Training for <strong>${evaluation.char}</strong> starts now.</p>
+                <div style="font-size: 8rem; margin-bottom: 24px; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary); font-family: 'Stardos Stencil', serif;" class="distressed-stencil">${evaluation.char}</div>
+                <div style="margin-bottom: 24px;">
+                    <div class="modal-px-label" style="color: var(--accent-success);">NEW CHARACTER ADDED</div>
+                    <p style="font-family: var(--font-main); font-size: 1.5rem; color: var(--text-primary); margin-top: 12px;">Character <strong>${evaluation.char}</strong> is now cleared for operations.</p>
                 </div>
             `;
         } else if (evaluation.status === 'regressed') {
-            title.textContent = "Level Locked";
+            title.innerHTML = `<span class="modal-px-header" style="color: var(--accent-danger);">LEVEL LOCKED</span>`;
             body.innerHTML = `
-                <div style="font-size: 4rem; margin-bottom: 20px; color: var(--accent-danger);">🔒</div>
-                <div style="margin-bottom: 20px;">
-                    <div style="font-size: 0.9rem; color: var(--accent-danger);">BACK TO BASICS</div>
-                    <p>Accuracy dropped below 75%. Character <strong>${evaluation.char}</strong> has been locked to help you focus on mastery of previous characters.</p>
+                <div style="font-size: 6rem; margin-bottom: 24px; color: var(--accent-danger);">🔒</div>
+                <div style="margin-bottom: 24px;">
+                    <div class="modal-px-label" style="color: var(--accent-danger);">RETRAINING REQUIRED</div>
+                    <p style="font-family: var(--font-main); font-size: 1.5rem; color: var(--text-primary); margin-top: 12px;">Accuracy dropped below 75%. <strong>${evaluation.char}</strong> has been locked to focus on mastery.</p>
                 </div>
             `;
         } else {
-            title.textContent = "Session Complete!";
+            title.innerHTML = `<span class="modal-px-header">SESSION END</span>`;
             const { history } = this.sm.state.progress;
             const recent = history.slice(-60);
             const acc = recent.length > 0 ? Math.round((recent.reduce((a, b) => a + b, 0) / recent.length) * 100) : 0;
 
             body.innerHTML = `
-              <div style="margin-bottom: 20px;">
-                <div style="font-size: 0.9rem; color: var(--text-muted);">ROLLING ACCURACY (LAST 60)</div>
-                <div style="font-size: 2.5rem; font-weight: bold; color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'};">${acc}%</div>
-                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">Target: 96% to Level Up | < 75% to Regress</div>
+              <div style="margin-bottom: 32px;">
+                <div class="modal-px-label">OPERATIONAL ACCURACY</div>
+                <div class="modal-px-value" style="color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'}; font-size: 5rem; margin-top: 8px;">${acc}%</div>
+                <div style="font-family: var(--font-main); font-size: 1.2rem; color: var(--text-muted); margin-top: 12px; letter-spacing: 1px;">TARGET: 96% TO ADVANCE</div>
               </div>
-              <div style="display: flex; justify-content: space-around; width: 100%;">
+              <div style="display: flex; justify-content: space-around; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px;">
                 <div>
-                  <div style="font-size: 0.8rem; color: var(--text-muted);">XP</div>
-                  <div style="font-size: 1.1rem; font-weight: bold;">+50</div>
+                  <div class="modal-px-label">BONUS XP</div>
+                  <div class="modal-px-value" style="font-size: 2.5rem; color: var(--text-primary);">+50</div>
                 </div>
+                <div style="width: 1px; background: rgba(255,255,255,0.1); height: 50px;"></div>
                 <div>
-                  <div style="font-size: 0.8rem; color: var(--text-muted);">STREAK</div>
-                  <div style="font-size: 1.1rem; font-weight: bold;">${this.sm.state.progress.streak}d</div>
+                  <div class="modal-px-label">STREAK</div>
+                  <div class="modal-px-value" style="font-size: 2.5rem; color: var(--accent-primary);">${this.sm.state.progress.streak}d</div>
                 </div>
               </div>
             `;
