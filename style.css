@@ -38,12 +38,13 @@
 
 body {
   background-color: var(--bg-primary);
-  /* Photorealistic Diamond Plate */
+  /* Photorealistic Classic Diamond Plate */
   background-image:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.25'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='rgba(0,0,0,0.6)'%3E%3Cpath d='M20 6L28 15L20 24L12 15z M0 26L8 35L0 44L-8 35z M40 26L48 35L40 44L32 35z'/%3E%3C/g%3E%3Cg fill='rgba(255,255,255,0.08)'%3E%3Cpath d='M20 4L28 13L20 22L12 13z M0 24L8 33L0 42L-8 33z M40 24L48 33L40 42L32 33z'/%3E%3C/g%3E%3Cg fill='rgba(0,0,0,0.6)'%3E%3Cpath d='M10 26L18 35L10 44L2 35z M30 6L38 15L30 24L22 15z' transform='rotate(90 20 20)'/%3E%3C/g%3E%3Cg fill='rgba(255,255,255,0.08)'%3E%3Cpath d='M10 24L18 33L10 42L2 33z M30 4L38 13L30 22L22 13z' transform='rotate(90 20 20)'/%3E%3C/g%3E%3C/svg%3E"),
-    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
-  background-size: 100% 100%, 30px 30px, 100% 100%;
+    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='b'%3E%3Cpath d='M 1 -13 C 6 -4, 6 4, 1 15 C -4 4, -4 -4, 1 -13 Z' fill='rgba(0,0,0,0.8)'/%3E%3Cpath d='M 0 -15 C 4 -5, 4 5, 0 15 C -4 5, -4 -5, 0 -15 Z' fill='rgba(35,40,45,0.9)'/%3E%3Cpath d='M 0 -15 C -4 -5, -4 5, 0 15 C -2 5, -2 -5, 0 -13 Z' fill='rgba(255,255,255,0.4)'/%3E%3C/g%3E%3Cuse href='%23b' x='10' y='10' transform='rotate(45 10 10)'/%3E%3Cuse href='%23b' x='30' y='30' transform='rotate(-45 30 30)'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.7) 100%),
+    linear-gradient(to bottom, #1a2024, #0b0d10);
+  background-size: 100% 100%, 40px 40px, 100% 100%, 100% 100%;
   background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-main);
@@ -378,7 +379,58 @@ button.secondary:hover {
   color: var(--text-primary);
 }
 
-/* Lit and Unlit Plastic Button States */
+/* Tactical Primary Buttons */
+.btn-tactical {
+  background: linear-gradient(to bottom, #2b2f33, #16181b) !important;
+  border: 1px solid #000 !important;
+  color: var(--accent-primary) !important;
+  box-shadow:
+    0 8px 15px rgba(0, 0, 0, 0.9),
+    inset 0 2px 3px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 3px #131518,
+    inset 0 0 0 4px #33383d !important;
+  text-shadow: 0 0 10px rgba(255, 170, 51, 0.6) !important;
+  border-radius: 8px !important;
+  font-weight: bold;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.1s;
+}
+
+.btn-tactical:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.9),
+    inset 0 4px 6px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 3px #131518,
+    inset 0 0 0 4px #222529 !important;
+}
+
+.btn-tactical::before,
+.btn-tactical::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 30px;
+  background: #111315;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.9), 0 1px 1px rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.btn-tactical::before {
+  left: 16px;
+}
+
+.btn-tactical::after {
+  right: 16px;
+}
+
+/* Drill Choice Buttons */
 .btn-rugged-glass {
   background: linear-gradient(135deg, #373f45 0%, #202428 100%) !important;
   border: 1px solid #111;
