@@ -64,17 +64,15 @@
     <!-- Screen: Drill -->
     <main id="screen-drill" class="screen" style="justify-content: flex-end; padding-bottom: 24px; gap: 24px;">
       <header style="display: flex; justify-content: space-between; align-items: stretch; height: 64px; width: 100%;">
-        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
-          <div class="label-red-pulse"
-            style="font-size: 0.8rem; font-weight: bold; letter-spacing: 1.5px; padding-left: 4px; text-transform: uppercase;">
-            EXIT</div>
-          <button id="btn-exit-drill" class="glass"
-            style="padding: 0 40px; height: 100%; font-size: 1.5rem; color: var(--text-primary); font-family: var(--font-main); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 12px; min-height: 48px;">
-            <span style="font-size: 1.2rem; transform: scale(1.5);">⏻</span>
-          </button>
+        <div id="btn-exit-drill" class="glass"
+          style="display: flex; padding: 0 24px; height: 100%; align-items: center; justify-content: center; cursor: pointer; border-radius: 12px; min-width: 140px;">
+          <div
+            style="font-size: 1.8rem; font-weight: bold; font-family: var(--font-main); color: var(--accent-danger); text-shadow: 0 0 8px rgba(255,58,58,0.5);">
+            EXIT
+          </div>
         </div>
         <div class="glass"
-          style="display: flex; gap: 16px; padding: 0 20px; height: 100%; align-items: center; justify-content: center;">
+          style="display: flex; gap: 16px; padding: 0 20px; height: 100%; align-items: center; justify-content: center; min-width: 140px;">
           <div id="drill-progress"
             style="font-size: 1.8rem; font-weight: bold; font-family: var(--font-main); color: var(--accent-primary); text-shadow: 0 0 8px rgba(255,170,51,0.5);">
             1/20
