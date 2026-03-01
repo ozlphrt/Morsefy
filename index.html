@@ -63,10 +63,11 @@
 
     <!-- Screen: Drill -->
     <main id="screen-drill" class="screen" style="justify-content: flex-end; padding-bottom: 24px; gap: 24px;">
-      <header style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 64px;">
+      <header
+        style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 64px; padding: 0 12px;">
         <!-- Exit Section -->
         <div id="btn-exit-drill" class="glass glass-pulse-red"
-          style="display: flex; width: 180px; height: 100%; align-items: center; justify-content: center; cursor: pointer; border-radius: 12px; position: relative;">
+          style="display: flex; width: 170px; height: 100%; align-items: center; justify-content: center; cursor: pointer; border-radius: 16px; position: relative;">
           <div
             style="font-family: var(--font-main); font-size: 2rem; font-weight: bold; color: var(--accent-danger); text-shadow: 0 0 10px rgba(255,58,58,0.6); line-height: 1; z-index: 10;">
             EXIT
@@ -75,7 +76,7 @@
 
         <!-- Stats Section -->
         <div class="glass"
-          style="display: flex; gap: 20px; padding: 0 20px; width: 180px; height: 100%; align-items: center; justify-content: center; border-radius: 12px; position: relative;">
+          style="display: flex; gap: 20px; padding: 0 20px; width: 170px; height: 100%; align-items: center; justify-content: center; border-radius: 16px; position: relative;">
           <div id="drill-progress"
             style="font-size: 2rem; font-weight: bold; font-family: var(--font-main); color: var(--accent-primary); text-shadow: 0 0 10px rgba(255,170,51,0.6);">
             1/20
@@ -111,9 +112,9 @@
 
     <!-- Screen: Progress -->
     <main id="screen-progress" class="screen">
-      <h2>Progress</h2>
-      <p class="text-muted">Mastery Overview</p>
-      <div id="mastery-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 24px;">
+      <h2 class="modal-px-header">LOGBOOK</h2>
+      <p class="modal-px-label" style="margin-top: -8px;">Mastery Overview</p>
+      <div id="mastery-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 32px;">
         <!-- A-Z grid injected here -->
       </div>
     </main>
@@ -171,17 +172,17 @@
     <!-- Modal: Reset Confirmation -->
     <div id="modal-reset-container" class="modal-overlay">
       <div class="modal-content glass fade-in">
-        <div style="font-size: 3rem; margin-bottom: 16px;">⚠️</div>
-        <h2 id="modal-reset-title" style="font-size: 2.5rem;">Reset Progress?</h2>
-        <div id="modal-reset-body" style="margin: 20px 0; font-size: 1.5rem; line-height: 1.4;">
-          <p>This will clear all your XP, streaks, and unlocked characters. This action cannot be undone.</p>
+        <div style="font-size: 3.5rem; margin-bottom: 20px;">⚠️</div>
+        <h2 class="modal-px-header" style="color: var(--accent-danger);">ERASE DATA?</h2>
+        <div class="modal-body" style="margin-bottom: 24px;">
+          <p>This will permanently clear all session logs, XP, and unlocked characters. This operation cannot be
+            reversed.</p>
         </div>
-        <div style="display: flex; gap: 16px; width: 100%; margin-top: 16px;">
+        <div style="display: flex; gap: 16px; width: 100%; margin-top: 8px;">
           <button id="modal-btn-reset-cancel" class="btn-tactical"
-            style="flex: 1; height: 56px; font-size: 1.5rem;">Cancel</button>
+            style="flex: 1; height: 56px; font-size: 1.5rem;">ABORT</button>
           <button id="modal-btn-reset-confirm" class="btn-tactical"
-            style="flex: 1; height: 56px; font-size: 1.5rem; color: var(--accent-danger) !important; text-shadow: 0 0 10px rgba(255,58,58,0.6) !important;">Reset
-            All</button>
+            style="flex: 1; height: 56px; font-size: 1.5rem; color: var(--accent-danger) !important; text-shadow: 0 0 10px rgba(255,58,58,0.4) !important;">CONFIRM</button>
         </div>
       </div>
     </div>
@@ -189,51 +190,53 @@
     <!-- Modal: Restart Level Confirmation -->
     <div id="modal-restart-container" class="modal-overlay">
       <div class="modal-content glass fade-in">
-        <div style="font-size: 3rem; margin-bottom: 16px;">🔄</div>
-        <h2 style="font-size: 2.5rem;">Restart Level?</h2>
-        <div style="margin: 20px 0; font-size: 1.5rem; line-height: 1.4;">
-          <p>This will reset your current mastery progress for the current character set. Your total XP and unlocked
-            characters will be saved.</p>
+        <div style="font-size: 3.5rem; margin-bottom: 20px;">🔄</div>
+        <h2 class="modal-px-header">CALIBRATE?</h2>
+        <div class="modal-body" style="margin-bottom: 24px;">
+          <p>This will reset current character mastery for recalibration. Your total XP and log history will remain
+            intact.</p>
         </div>
-        <div style="display: flex; gap: 16px; width: 100%; margin-top: 16px;">
+        <div style="display: flex; gap: 16px; width: 100%; margin-top: 8px;">
           <button id="modal-btn-restart-cancel" class="btn-tactical"
-            style="flex: 1; height: 56px; font-size: 1.5rem;">Cancel</button>
+            style="flex: 1; height: 56px; font-size: 1.5rem;">ABORT</button>
           <button id="modal-btn-restart-confirm" class="btn-tactical"
-            style="flex: 1; height: 56px; font-size: 1.5rem;">Restart</button>
+            style="flex: 1; height: 56px; font-size: 1.5rem;">INITIALIZE</button>
         </div>
       </div>
     </div>
 
     <!-- Modal: Character Stats -->
     <div id="modal-char-stats" class="modal-overlay">
-      <div class="modal-content glass fade-in">
-        <div id="stats-char-display"
-          style="font-size: 6rem; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary); margin-bottom: 10px;">
+      <div class="modal-content glass fade-in" style="padding: 40px 24px;">
+        <div id="stats-char-display" class="distressed-stencil"
+          style="font-size: 7rem; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary); margin-bottom: 8px; font-family: 'Stardos Stencil', serif;">
           A</div>
-        <div id="stats-char-morse" class="text-muted"
-          style="font-size: 1.5rem; letter-spacing: 0.3em; margin-bottom: 24px;">.-</div>
+        <div id="stats-char-morse"
+          style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; letter-spacing: 0.4em; margin-bottom: 32px; font-weight: 600; color: var(--text-muted); opacity: 0.8;">
+          .-</div>
 
-        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
-          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
-            <div style="font-size: 0.8rem; color: var(--text-muted);">ACCURACY</div>
-            <div id="stats-accuracy" style="font-size: 1.5rem; font-weight: bold;">98%</div>
+        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px;">
+          <div class="glass" style="padding: 16px 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+            <div class="modal-px-label" style="font-size: 0.85rem; margin-bottom: 4px;">ACCURACY</div>
+            <div id="stats-accuracy" class="modal-px-value" style="font-size: 2.2rem;">98%</div>
           </div>
-          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
-            <div style="font-size: 0.8rem; color: var(--text-muted);">ATTEMPTS</div>
-            <div id="stats-attempts" style="font-size: 1.5rem; font-weight: bold;">142</div>
+          <div class="glass" style="padding: 16px 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+            <div class="modal-px-label" style="font-size: 0.85rem; margin-bottom: 4px;">ATTEMPTS</div>
+            <div id="stats-attempts" class="modal-px-value" style="font-size: 2.2rem;">142</div>
           </div>
-          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
-            <div style="font-size: 0.8rem; color: var(--text-muted);">SPEED</div>
-            <div id="stats-speed" style="font-size: 1.5rem; font-weight: bold;">0.4s</div>
+          <div class="glass" style="padding: 16px 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+            <div class="modal-px-label" style="font-size: 0.85rem; margin-bottom: 4px;">AVG SPD</div>
+            <div id="stats-speed" class="modal-px-value" style="font-size: 2.2rem;">0.4s</div>
           </div>
-          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
-            <div style="font-size: 0.8rem; color: var(--text-muted);">MASTERY</div>
-            <div id="stats-mastery" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-primary);">Gold
+          <div class="glass" style="padding: 16px 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+            <div class="modal-px-label" style="font-size: 0.85rem; margin-bottom: 4px;">RANK</div>
+            <div id="stats-mastery" class="modal-px-value" style="font-size: 2rem; color: var(--accent-primary);">GOLD
             </div>
           </div>
         </div>
 
-        <button id="modal-btn-stats-close" style="width: 100%;">Close</button>
+        <button id="modal-btn-stats-close" class="btn-tactical"
+          style="width: 100%; height: 56px; font-size: 1.4rem;">CLOSE</button>
       </div>
     </div>
 

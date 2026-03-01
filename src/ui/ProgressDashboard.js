@@ -20,18 +20,20 @@ export function renderProgressDashboard(state) {
         item.style.position = 'relative';
         item.style.fontSize = '2.5rem';
         item.style.fontWeight = 'bold';
+        item.style.fontFamily = "'Stardos Stencil', serif";
         item.style.cursor = 'pointer';
+        item.className = 'glass btn-rugged-glass no-screws';
 
         const isUnlocked = state.progress.unlockedChars.includes(char);
-        item.style.opacity = isUnlocked ? '1' : '0.2';
+        item.style.opacity = isUnlocked ? '1' : '0.15';
 
         if (isUnlocked) {
             const accuracy = stats ? (stats.correct / stats.attempts) : 0;
 
             // Mastery Ring
             const color = getMasteryColor(accuracy, stats?.attempts);
-            item.style.border = `3px solid ${color}`;
-            item.style.boxShadow = `0 0 15px ${color}44, inset 0 0 10px ${color}22`;
+            item.style.border = `2px solid ${color}`;
+            item.style.boxShadow = `0 0 15px ${color}33, inset 0 0 10px ${color}11`;
 
             item.onclick = () => showStats(char, stats, color);
         }
@@ -54,6 +56,7 @@ function showStats(char, stats, color) {
     if (!modal) return;
 
     display.textContent = char;
+    display.style.fontFamily = "'Stardos Stencil', serif";
     display.style.textShadow = `0 0 30px ${color}, 0 0 10px #ffffff`;
     morse.textContent = MORSE_MAP[char.toUpperCase()] || '';
 
@@ -68,13 +71,13 @@ function showStats(char, stats, color) {
 
     // Mastery Name based on color/logic
     let masteryName = 'None';
-    if (color === '#22c55e') masteryName = 'Operator';
-    else if (color === '#15803d') masteryName = 'Expert';
-    else if (color === '#facc15') masteryName = 'Advanced';
-    else if (color === '#ea580c') masteryName = 'Intermediate';
-    else if (color === '#ef4444') masteryName = 'Learner';
-    else if (color === '#7f1d1d') masteryName = 'Novice';
-    else masteryName = 'Practicing';
+    if (color === '#22c55e') masteryName = 'OPERATOR';
+    else if (color === '#15803d') masteryName = 'EXPERT';
+    else if (color === '#facc15') masteryName = 'ADVANCED';
+    else if (color === '#ea580c') masteryName = 'INTERMEDIATE';
+    else if (color === '#ef4444') masteryName = 'LEARNER';
+    else if (color === '#7f1d1d') masteryName = 'NOVICE';
+    else masteryName = 'PRACTICING';
 
     mastEl.textContent = masteryName;
     mastEl.style.color = color;

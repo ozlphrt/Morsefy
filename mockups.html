@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morsefy Tactical Mockups</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            overflow-x: auto;
+            background: #050505;
+            font-family: sans-serif;
+        }
+
+        .device {
+            width: 375px;
+            height: 812px;
+            margin: 40px;
+            flex-shrink: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+        }
+
+        .label {
+            text-align: center;
+            color: white;
+            margin-top: -30px;
+            font-weight: bold;
+            position: absolute;
+            width: 100%;
+            top: -30px;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 2px;
+        }
+
+        /* Shared structural CSS */
+        .app-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .progress-card {
+            padding: 20px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-streak {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-track {
+            height: 12px;
+            width: 100%;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 35%;
+            position: relative;
+        }
+
+        .progress-text {
+            line-height: 1.4;
+        }
+
+        .main-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            border: none;
+        }
+
+        .nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+
+        /* =========================================================
+           MOCKUP 1: Classic HAM Radio (Amber & Olive)
+           Vintage equipment, warm amber glow, heavy mechanical feel
+           ========================================================= */
+        #ham-radio {
+            background: #1f211d;
+            color: #a19d8e;
+            font-family: 'VT323', monospace;
+        }
+
+        #ham-radio .header h1 {
+            font-size: 3.5rem;
+            color: #ffb700;
+            text-shadow: 0 0 10px rgba(255, 183, 0, 0.4);
+            margin: 0;
+            font-weight: normal;
+        }
+
+        #ham-radio .header p {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            color: #727367;
+            margin-top: 0;
+        }
+
+        #ham-radio .progress-card {
+            background: #141512;
+            border-radius: 8px;
+            box-shadow:
+                inset 2px 2px 5px rgba(0, 0, 0, 0.8),
+                inset -1px -1px 2px rgba(255, 255, 255, 0.05),
+                0 2px 0 rgba(255, 255, 255, 0.05);
+            border: 2px solid #0d0e0c;
+        }
+
+        #ham-radio .progress-streak {
+            font-size: 2rem;
+            color: #ffb700;
+            text-shadow: 0 0 8px rgba(255, 183, 0, 0.5);
+        }
+
+        #ham-radio .progress-xp {
+            font-size: 1.5rem;
+            color: #ff3300;
+            text-shadow: 0 0 8px rgba(255, 51, 0, 0.5);
+        }
+
+        #ham-radio .progress-track {
+            background: #0a0a09;
+            border-radius: 4px;
+            border: 1px solid #000;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+            height: 16px;
+        }
+
+        #ham-radio .progress-fill {
+            background: #ffb700;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(255, 183, 0, 0.6);
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0, 0, 0, 0.3) 4px, rgba(0, 0, 0, 0.3) 5px);
+        }
+
+        #ham-radio .progress-text {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            color: #727367;
+        }
+
+        #ham-radio .main-btn {
+            background: linear-gradient(to bottom, #4a4e41, #2d3028);
+            color: #dcded3;
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            border-radius: 8px;
+            border: 2px solid #141512;
+            box-shadow:
+                0 6px 0 #141512,
+                0 8px 15px rgba(0, 0, 0, 0.5),
+                inset 0 2px 2px rgba(255, 255, 255, 0.1);
+            text-shadow: -1px -1px 0 #000;
+        }
+
+        #ham-radio .main-btn:active {
+            transform: translateY(4px);
+            box-shadow:
+                0 2px 0 #141512,
+                0 2px 5px rgba(0, 0, 0, 0.5),
+                inset 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        #ham-radio .nav {
+            background: #171815;
+            border-top: 2px solid #0d0e0c;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #ham-radio .nav-item {
+            color: #5a5c53;
+            font-size: 1.2rem;
+        }
+
+        #ham-radio .nav-item.active {
+            color: #ffb700;
+            text-shadow: 0 0 5px rgba(255, 183, 0, 0.4);
+        }
+
+
+        /* =========================================================
+           MOCKUP 2: Submarine / Sonar (Deep Teal & Brushed Steel)
+           Cold, precise, radar sweeps, marine instrumentation
+           ========================================================= */
+        #sonar {
+            background: #141c21;
+            color: #5c7b8c;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        #sonar .header h1 {
+            font-size: 2.2rem;
+            color: #00ffcc;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        #sonar .header p {
+            font-size: 0.9rem;
+            color: #355263;
+            letter-spacing: 2px;
+        }
+
+        #sonar .progress-card {
+            background: linear-gradient(135deg, #1b262d, #141c21);
+            border: 1px solid #23343d;
+            border-radius: 12px;
+            box-shadow:
+                5px 5px 15px rgba(0, 0, 0, 0.5),
+                -1px -1px 2px rgba(255, 255, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Sonar grid line effect */
+        #sonar .progress-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+            background-size: 15px 15px;
+            pointer-events: none;
+        }
+
+        #sonar .progress-streak {
+            font-weight: bold;
+            color: #00ffcc;
+            text-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
+        }
+
+        #sonar .progress-xp {
+            color: #5c7b8c;
+        }
+
+        #sonar .progress-track {
+            background: #0c1114;
+            border-radius: 6px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        #sonar .progress-fill {
+            background: #00ffcc;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            opacity: 0.8;
+        }
+
+        #sonar .progress-text {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #355263;
+        }
+
+        #sonar .main-btn {
+            background: #1b262d;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            border-radius: 30px;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.1), inset 0 0 10px rgba(0, 255, 204, 0.05);
+            transition: all 0.2s;
+        }
+
+        #sonar .main-btn:active {
+            background: #00ffcc;
+            color: #0c1114;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.6);
+        }
+
+        #sonar .nav {
+            background: #10161a;
+            border-top: 1px solid #1a252c;
+        }
+
+        #sonar .nav-item {
+            color: #2b3d4a;
+            text-transform: uppercase;
+        }
+
+        #sonar .nav-item.active {
+            color: #00ffcc;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+        }
+
+
+        /* =========================================================
+           MOCKUP 3: Cyber-Mil (Neon Green & Terminal Black)
+           Modern military HUD, night vision aesthetic, highly digital
+           ========================================================= */
+        #cyber-mil {
+            background: #010401;
+            color: #1e4d1e;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        #cyber-mil .header h1 {
+            font-size: 2.5rem;
+            color: #33ff33;
+            margin: 0;
+            font-weight: normal;
+            border-left: 5px solid #33ff33;
+            padding-left: 10px;
+            line-height: 1;
+        }
+
+        #cyber-mil .header p {
+            font-size: 1rem;
+            color: #1e4d1e;
+            margin: 10px 0 0 15px;
+        }
+
+        #cyber-mil .progress-card {
+            background: transparent;
+            border: 1px solid #1e4d1e;
+            position: relative;
+        }
+
+        /* Corner tick marks typical of HUDs */
+        #cyber-mil .progress-card::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #33ff33;
+            border-left: 2px solid #33ff33;
+        }
+
+        #cyber-mil .progress-streak {
+            color: #33ff33;
+        }
+
+        #cyber-mil .progress-xp {
+            color: #33ff33;
+            opacity: 0.7;
+        }
+
+        #cyber-mil .progress-track {
+            background: #031003;
+            height: 8px;
+            border: 1px solid #092109;
+        }
+
+        #cyber-mil .progress-fill {
+            background: #33ff33;
+            box-shadow: 0 0 8px #33ff33;
+        }
+
+        #cyber-mil .progress-text {
+            font-size: 0.85rem;
+            color: #2b702b;
+        }
+
+        #cyber-mil .main-btn {
+            background: rgba(51, 255, 51, 0.05);
+            color: #33ff33;
+            border: 1px solid #33ff33;
+            border-radius: 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.4rem;
+            position: relative;
+        }
+
+        #cyber-mil .main-btn::before,
+        #cyber-mil .main-btn::after {
+            content: '[]';
+            position: absolute;
+            color: #1e4d1e;
+        }
+
+        #cyber-mil .main-btn::before {
+            left: 10px;
+        }
+
+        #cyber-mil .main-btn::after {
+            right: 10px;
+        }
+
+        #cyber-mil .main-btn:active {
+            background: rgba(51, 255, 51, 0.2);
+        }
+
+        #cyber-mil .nav {
+            background: transparent;
+            border-top: 1px solid #1e4d1e;
+        }
+
+        #cyber-mil .nav-item {
+            color: #112d11;
+            font-size: 1rem;
+        }
+
+        #cyber-mil .nav-item.active {
+            color: #33ff33;
+            text-shadow: 0 0 10px rgba(51, 255, 51, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mockup 1: Classic HAM Radio -->
+    <div>
+        <div class="label" style="top: 10px;">1. Classic HAM Radio</div>
+        <div class="device" id="ham-radio">
+            <div class="app-container">
+                <div class="header">
+                    <h1>MORSEFY</h1>
+                    <p>RX/TX TRAINING M01</p>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <div class="progress-streak">01 SEQ</div>
+                        <div class="progress-xp">600 XP</div>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">LVL 07 • STANDBY: 40 ATTEMPTS</div>
+                </div>
+
+                <button class="main-btn">INITIATE [TX]</button>
+
+                <div class="nav">
+                    <a href="#" class="nav-item active">
+                        <div>BASE</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div>LOG</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div>CFG</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mockup 2: Submarine / Sonar -->
+    <div>
+        <div class="label" style="top: 10px;">2. Submarine / Sonar</div>
+        <div class="device" id="sonar">
+            <div class="app-container">
+                <div class="header">
+                    <h1>Morsefy</h1>
+                    <p>ACOUSTIC PROTOCOL</p>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <div class="progress-streak">CYCLE_01</div>
+                        <div class="progress-xp">VAL: 0600</div>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">DEPTH 07 / RECALIBRATING...</div>
+                </div>
+
+                <button class="main-btn">ENABLE TRANSDUCER</button>
+
+                <div class="nav">
+                    <a href="#" class="nav-item active">
+                        <div>DASH</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div>ANLYZ</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div>SYS</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mockup 3: Cyber-MIL -->
+    <div>
+        <div class="label" style="top: 10px;">3. Cyber-MIL HUD</div>
+        <div class="device" id="cyber-mil">
+            <div class="app-container">
+                <div class="header">
+                    <h1>MORSEFY_</h1>
+                    <p>SYS.TRN.01</p>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-header">
+                        <div class="progress-streak">DAY:01</div>
+                        <div class="progress-xp">EXP_600</div>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">LVL.07 // 40_CYCLES_RQD</div>
+                </div>
+
+                <button class="main-btn">EXECUTE</button>
+
+                <div class="nav">
+                    <a href="#" class="nav-item active">
+                        <div>CMD</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div>DAT</div>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <div>OPT</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

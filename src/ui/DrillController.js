@@ -207,10 +207,10 @@ export class DrillController {
         if (evaluation.status === 'unlocked') {
             title.innerHTML = `<span class="modal-px-header" style="color: var(--accent-success);">LEVEL UP</span>`;
             body.innerHTML = `
-                <div style="font-size: 8rem; margin-bottom: 24px; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary); font-family: 'Stardos Stencil', serif;" class="distressed-stencil">${evaluation.char}</div>
+                <div style="font-size: 9rem; margin-bottom: 24px; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary); font-family: 'Stardos Stencil', serif;" class="distressed-stencil">${evaluation.char}</div>
                 <div style="margin-bottom: 24px;">
                     <div class="modal-px-label" style="color: var(--accent-success);">NEW CHARACTER ADDED</div>
-                    <p style="font-family: var(--font-main); font-size: 1.5rem; color: var(--text-primary); margin-top: 12px;">Character <strong>${evaluation.char}</strong> is now cleared for operations.</p>
+                    <p style="margin-top: 12px;">Character <strong>${evaluation.char}</strong> is now cleared for operations.</p>
                 </div>
             `;
         } else if (evaluation.status === 'regressed') {
@@ -219,7 +219,7 @@ export class DrillController {
                 <div style="font-size: 6rem; margin-bottom: 24px; color: var(--accent-danger);">🔒</div>
                 <div style="margin-bottom: 24px;">
                     <div class="modal-px-label" style="color: var(--accent-danger);">RETRAINING REQUIRED</div>
-                    <p style="font-family: var(--font-main); font-size: 1.5rem; color: var(--text-primary); margin-top: 12px;">Accuracy dropped below 75%. <strong>${evaluation.char}</strong> has been locked to focus on mastery.</p>
+                    <p style="margin-top: 12px;">Accuracy dropped below 75%. <strong>${evaluation.char}</strong> has been locked to focus on mastery.</p>
                 </div>
             `;
         } else {
@@ -231,18 +231,18 @@ export class DrillController {
             body.innerHTML = `
               <div style="margin-bottom: 32px;">
                 <div class="modal-px-label">OPERATIONAL ACCURACY</div>
-                <div class="modal-px-value" style="color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'}; font-size: 5rem; margin-top: 8px;">${acc}%</div>
-                <div style="font-family: var(--font-main); font-size: 1.2rem; color: var(--text-muted); margin-top: 12px; letter-spacing: 1px;">TARGET: 96% TO ADVANCE</div>
+                <div class="modal-px-value" style="color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'}; margin-top: 8px;">${acc}%</div>
+                <div class="modal-px-label" style="font-size: 0.9rem; color: var(--text-muted); margin-top: 12px; opacity: 0.6; font-weight: 400;">TARGET: 96% TO ADVANCE</div>
               </div>
               <div style="display: flex; justify-content: space-around; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 24px;">
                 <div>
                   <div class="modal-px-label">BONUS XP</div>
-                  <div class="modal-px-value" style="font-size: 2.5rem; color: var(--text-primary);">+50</div>
+                  <div class="modal-px-value" style="font-size: 2.8rem; color: var(--text-primary); margin-top: 4px;">+50</div>
                 </div>
                 <div style="width: 1px; background: rgba(255,255,255,0.1); height: 50px;"></div>
                 <div>
                   <div class="modal-px-label">STREAK</div>
-                  <div class="modal-px-value" style="font-size: 2.5rem; color: var(--accent-primary);">${this.sm.state.progress.streak}d</div>
+                  <div class="modal-px-value" style="font-size: 2.8rem; color: var(--accent-primary); margin-top: 4px;">${this.sm.state.progress.streak}d</div>
                 </div>
               </div>
             `;

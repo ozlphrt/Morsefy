@@ -584,27 +584,40 @@ button.secondary:hover {
 
 /* Modal Polish */
 .modal-px-header {
-  font-family: var(--font-main);
-  font-size: 3.5rem;
-  font-weight: bold;
+  font-family: 'Stardos Stencil', serif;
+  font-size: 3rem;
+  font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  color: var(--text-primary);
+  opacity: 0.95;
 }
 
 .modal-px-label {
-  font-family: var(--font-main);
-  font-size: 1.2rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: var(--text-muted);
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
+  opacity: 0.8;
 }
 
 .modal-px-value {
-  font-family: var(--font-main);
-  font-size: 4rem;
-  font-weight: bold;
+  font-family: 'Outfit', sans-serif;
+  font-size: 4.5rem;
+  font-weight: 700;
   line-height: 1;
+  letter-spacing: -1px;
+}
+
+.modal-body p {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  font-weight: 400;
 }
 
 /* Drill Choice Buttons */
