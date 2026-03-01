@@ -306,7 +306,10 @@ h2 {
 .tx-lamp {
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.7' style='mix-blend-mode: multiply;'/%3E%3C/svg%3E"),
+    linear-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5) 1px, transparent 1px),
     radial-gradient(circle at 40% 30%, #5a1a1a 0%, #1a0505 80%);
+  background-size: 100% 100%, 3px 3px, 3px 3px, 100% 100%;
   border: 4px solid #080a07;
   box-shadow:
     inset 0 6px 15px rgba(255, 255, 255, 0.1),
@@ -334,7 +337,10 @@ h2 {
 .tx-lamp.playing {
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5' style='mix-blend-mode: multiply;'/%3E%3C/svg%3E"),
+    linear-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5) 1px, transparent 1px),
     radial-gradient(circle at 40% 40%, #e65c5c 0%, #a61c1c 60%, #3a0000 100%);
+  background-size: 100% 100%, 3px 3px, 3px 3px, 100% 100%;
   box-shadow:
     inset 0 6px 10px rgba(255, 180, 180, 0.3),
     inset 0 -4px 10px rgba(80, 0, 0, 0.9),
