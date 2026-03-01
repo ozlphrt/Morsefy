@@ -415,6 +415,7 @@ button.secondary:hover {
   letter-spacing: 2px;
   position: relative;
   overflow: hidden;
+  outline: none;
   transition: all 0.1s;
 }
 
