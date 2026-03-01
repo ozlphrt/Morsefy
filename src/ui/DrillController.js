@@ -121,6 +121,7 @@ export class DrillController {
         choices.forEach(char => {
             const btn = document.createElement('button');
             btn.textContent = char;
+            btn.style.fontFamily = "'Black Ops One', monospace";
             btn.style.fontSize = '7rem';
             btn.style.height = '180px';
             btn.style.fontWeight = '900';

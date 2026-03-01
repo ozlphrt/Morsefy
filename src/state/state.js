@@ -25,14 +25,19 @@ export const INITIAL_STATE = {
 class StateManager {
   constructor() {
     const saved = JSON.parse(localStorage.getItem('morsefy_state'));
-    this.state = saved || INITIAL_STATE;
 
-    // Migration for existing users: ensure new properties exist
-    if (this.state.progress && !this.state.progress.history) {
-      this.state.progress.history = [];
-    }
-    if (this.state.settings && this.state.settings.lightFlashOn === undefined) {
-      this.state.settings.lightFlashOn = true;
+    // Start with a clean copy of the current schema
+    this.state = JSON.parse(JSON.stringify(INITIAL_STATE));
+
+    // Safely merge existing user data over the default schema
+    if (saved) {
+      if (saved.settings) this.state.settings = { ...this.state.settings, ...saved.settings };
+      if (saved.progress) this.state.progress = { ...this.state.progress, ...saved.progress };
+      if (saved.stats) this.state.stats = { ...this.state.stats, ...saved.stats };
+
+      // Safety net for critical arrays that might be missing in older versions
+      if (!this.state.progress.history) this.state.progress.history = [];
+      if (!this.state.progress.unlockedChars) this.state.progress.unlockedChars = [...INITIAL_STATE.progress.unlockedChars];
     }
 
     this.listeners = [];
