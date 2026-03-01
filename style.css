@@ -31,6 +31,10 @@
 
 body {
   background-color: var(--bg-primary);
+  /* Dark Dusted Texture Pattern */
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 2px, transparent 2px, transparent 4px);
   color: var(--text-primary);
   font-family: var(--font-main);
   line-height: 1.5;
@@ -69,6 +73,27 @@ body {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
   z-index: -1;
   pointer-events: none;
+}
+
+/* Rugged Bolts in Corners */
+.glass::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  left: 6px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 0 0, #0a0a09 3px, transparent 4px),
+    radial-gradient(circle at 100% 0, #0a0a09 3px, transparent 4px),
+    radial-gradient(circle at 0 100%, #0a0a09 3px, transparent 4px),
+    radial-gradient(circle at 100% 100%, #0a0a09 3px, transparent 4px),
+    radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.05) 4px, transparent 5px),
+    radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.05) 4px, transparent 5px),
+    radial-gradient(circle at 0 100%, rgba(255, 255, 255, 0.05) 4px, transparent 5px),
+    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.05) 4px, transparent 5px);
+  z-index: 10;
 }
 
 .glass:hover {
@@ -240,6 +265,21 @@ button {
   position: relative;
 }
 
+button::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 0 0, #141512 2px, transparent 3px),
+    radial-gradient(circle at 100% 0, #141512 2px, transparent 3px),
+    radial-gradient(circle at 0 100%, #141512 2px, transparent 3px),
+    radial-gradient(circle at 100% 100%, #141512 2px, transparent 3px);
+}
+
 button:hover {
   background: linear-gradient(to bottom, #565a4c, #35382f);
 }
@@ -272,6 +312,22 @@ button.secondary:hover {
   text-shadow: -1px -1px 0 #000 !important;
   border-radius: 8px !important;
   transition: all 0.1s;
+}
+
+.btn-plastic::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  left: 6px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 0 0, #0d0e0c 3px, transparent 4px),
+    radial-gradient(circle at 100% 0, #0d0e0c 3px, transparent 4px),
+    radial-gradient(circle at 0 100%, #0d0e0c 3px, transparent 4px),
+    radial-gradient(circle at 100% 100%, #0d0e0c 3px, transparent 4px);
+  z-index: 10;
 }
 
 .btn-plastic:active {
