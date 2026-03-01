@@ -4,6 +4,7 @@ import { trainingEngine } from './src/training/training.js';
 import { DrillController } from './src/ui/DrillController.js';
 import { renderProgressDashboard } from './src/ui/ProgressDashboard.js';
 import { morseEngine } from './src/engine/engine.js';
+import { registerSW } from 'virtual:pwa-register';
 
 const training = trainingEngine(stateManager);
 const drillController = new DrillController(training, stateManager);
@@ -138,6 +139,16 @@ document.getElementById('modal-btn-restart-cancel')?.addEventListener('click', (
 document.getElementById('modal-btn-restart-confirm')?.addEventListener('click', () => {
     stateManager.restartLevel();
     window.location.reload();
+});
+
+// --- PWA Registration ---
+const updateSW = registerSW({
+    onNeedRefresh() {
+        console.log('New content available, please refresh.');
+    },
+    onOfflineReady() {
+        console.log('Morsefy is ready to play offline!');
+    },
 });
 
 console.log('Morsefy Initialized');
