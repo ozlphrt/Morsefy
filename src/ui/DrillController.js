@@ -121,11 +121,11 @@ export class DrillController {
         choices.forEach(char => {
             const btn = document.createElement('button');
             btn.textContent = char;
-            btn.style.fontFamily = "'Black Ops One', monospace";
+            btn.style.fontFamily = "'Stardos Stencil', serif";
             btn.style.fontSize = '7rem';
             btn.style.height = '180px';
-            btn.style.fontWeight = '900';
-            btn.className = 'btn-rugged-glass';
+            btn.style.fontWeight = '700'; /* 700 is the max weight available for Stardos */
+            btn.className = 'btn-rugged-glass distressed-stencil';
             btn.onclick = () => this.handleAnswer(char);
             this.ui.choices.appendChild(btn);
         });
