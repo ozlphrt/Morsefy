@@ -64,8 +64,15 @@
     <!-- Screen: Drill -->
     <main id="screen-drill" class="screen" style="justify-content: flex-end; padding-bottom: 24px; gap: 24px;">
       <header style="display: flex; justify-content: space-between; align-items: stretch; height: 64px; width: 100%;">
-        <button id="btn-exit-drill" class="glass"
-          style="padding: 0 40px; height: 100%; font-size: 1.5rem; color: var(--text-primary); font-family: var(--font-main); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 12px;">EXIT</button>
+        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+          <div
+            style="font-size: 0.8rem; color: var(--text-muted); font-weight: bold; letter-spacing: 1px; padding-left: 4px;">
+            EXIT</div>
+          <button id="btn-exit-drill" class="glass"
+            style="padding: 0 40px; height: 100%; font-size: 1.5rem; color: var(--text-primary); font-family: var(--font-main); cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 12px; min-height: 48px;">
+            <span style="font-size: 1.2rem; transform: scale(1.5);">⏻</span>
+          </button>
+        </div>
         <div class="glass"
           style="display: flex; gap: 16px; padding: 0 20px; height: 100%; align-items: center; justify-content: center;">
           <div id="drill-progress"
