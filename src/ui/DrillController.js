@@ -117,7 +117,7 @@ export class DrillController {
             btn.textContent = char;
             btn.style.fontSize = '5rem';
             btn.style.height = '160px';
-            btn.className = 'btn-plastic';
+            btn.className = 'btn-rugged-glass';
             btn.onclick = () => this.handleAnswer(char);
             this.ui.choices.appendChild(btn);
         });

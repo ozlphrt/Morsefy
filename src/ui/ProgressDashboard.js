@@ -11,15 +11,15 @@ export function renderProgressDashboard(state) {
     KOCH_ORDER.split('').forEach(char => {
         const stats = state.stats[char];
         const item = document.createElement('div');
-        item.className = 'glass';
+        item.className = 'glass no-screws';
         item.style.height = '75px';
         item.style.display = 'flex';
         item.style.flexDirection = 'column';
         item.style.alignItems = 'center';
         item.style.justifyContent = 'center';
         item.style.position = 'relative';
-        item.style.fontSize = '1.8rem';
-        item.style.fontWeight = '800';
+        item.style.fontSize = '2.5rem';
+        item.style.fontWeight = 'bold';
         item.style.cursor = 'pointer';
 
         const isUnlocked = state.progress.unlockedChars.includes(char);
