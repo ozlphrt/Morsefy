@@ -52,7 +52,7 @@ function updateUI(state) {
     const xpEl = document.getElementById('home-xp');
     const progressLine = document.getElementById('home-progress-bar');
 
-    if (streakEl) streakEl.textContent = `🔥 ${state.progress.streak} Days`;
+    if (streakEl) streakEl.textContent = `${state.progress.streak} SEQ`;
     if (xpEl) xpEl.textContent = `${state.progress.xp} XP`;
     if (progressLine) {
         // Basic calculation for progress bar
