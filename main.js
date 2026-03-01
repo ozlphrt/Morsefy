@@ -3,6 +3,7 @@ import { stateManager } from './src/state/state.js';
 import { trainingEngine } from './src/training/training.js';
 import { DrillController } from './src/ui/DrillController.js';
 import { renderProgressDashboard } from './src/ui/ProgressDashboard.js';
+import { morseEngine } from './src/engine/engine.js';
 
 const training = trainingEngine(stateManager);
 const drillController = new DrillController(training, stateManager);
@@ -38,6 +39,7 @@ navItems.forEach(item => {
 });
 
 document.getElementById('btn-start-drill')?.addEventListener('click', () => {
+    morseEngine.init(); // Synchronous user-gesture to resume AudioContext
     showScreen('drill');
     drillController.start();
 });
