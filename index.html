@@ -7,9 +7,10 @@
   <title>Morsefy — Audio-First Training</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/Morsefy/assets/index-XfEvfJy0.js"></script>
-  <link rel="stylesheet" crossorigin href="/Morsefy/assets/index-P0V6x5V0.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=VT323&display=swap"
+    rel="stylesheet">
+  <script type="module" crossorigin src="/Morsefy/assets/index-Bd2CwZNM.js"></script>
+  <link rel="stylesheet" crossorigin href="/Morsefy/assets/index-DND20LDL.css">
 </head>
 
 <body>
@@ -23,17 +24,21 @@
         <p class="text-muted">Audio-first Koch training</p>
       </header>
 
-      <section class="glass fade-in" style="padding: 24px; margin-bottom: 24px;">
+      <section class="glass fade-in" style="padding: 24px; margin-bottom: 24px; border-radius: 8px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <h2 id="home-streak">🔥 0 Days</h2>
-          <div id="home-xp" style="font-weight: bold; color: var(--accent-secondary);">0 XP</div>
+          <h2 id="home-streak"
+            style="font-size: 2rem; color: var(--accent-primary); text-shadow: 0 0 8px rgba(255,183,0,0.5);">0 SEQ</h2>
+          <div id="home-xp"
+            style="font-size: 1.5rem; font-weight: bold; color: var(--accent-danger); text-shadow: 0 0 8px rgba(255,51,0,0.5);">
+            0 XP</div>
         </div>
-        <div style="height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden;">
+        <div
+          style="height: 16px; background: #0a0a09; border: 1px solid #000; box-shadow: inset 0 2px 4px rgba(0,0,0,0.9); border-radius: 4px; overflow: hidden;">
           <div id="home-progress-bar"
-            style="width: 0%; height: 100%; background: var(--accent-primary); transition: width 0.5s ease;"></div>
+            style="width: 0%; height: 100%; border-radius: 3px; box-shadow: 0 0 10px rgba(255,183,0,0.6); background-color: var(--accent-primary); background-image: repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0,0,0,0.3) 4px, rgba(0,0,0,0.3) 5px); transition: width 0.5s ease;">
+          </div>
         </div>
-        <p id="home-progress-text" class="text-muted" style="font-size: 0.9rem; margin-top: 8px;">Character 2/40 • Koch
-          Level 1</p>
+        <p id="home-progress-text" class="text-muted" style="margin-top: 12px;">CHAR 2/40 • LVL 1</p>
       </section>
 
       <div style="display: flex; flex-direction: column; gap: 16px;">
