@@ -522,6 +522,29 @@ button.secondary:hover {
   animation: tactical-pulse-red 2s ease-in-out infinite;
 }
 
+/* Red Oscillating Glow for Glass Buttons */
+.glass-pulse-red {
+  animation: glass-glow-red 2.5s ease-in-out infinite;
+}
+
+@keyframes glass-glow-red {
+
+  0%,
+  100% {
+    box-shadow: var(--glass-shadow);
+    border-color: var(--glass-border);
+  }
+
+  50% {
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 0 15px rgba(255, 58, 58, 0.2),
+      0 0 15px rgba(255, 58, 58, 0.3);
+    border-color: rgba(255, 58, 58, 0.4);
+    background-color: #2b1515;
+  }
+}
+
 /* Drill Choice Buttons */
 .btn-rugged-glass {
   background: linear-gradient(135deg, #373f45 0%, #202428 100%) !important;
