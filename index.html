@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Morsefy — Audio-First Training</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/Morsefy/assets/index-XfEvfJy0.js"></script>
+  <link rel="stylesheet" crossorigin href="/Morsefy/assets/index-P0V6x5V0.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Screen: Home -->
+    <main id="screen-home" class="screen active">
+      <header style="margin-bottom: 40px; margin-top: 20px;">
+        <h1
+          style="background: linear-gradient(to right, #6366f1, #a855f7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+          Morsefy</h1>
+        <p class="text-muted">Audio-first Koch training</p>
+      </header>
+
+      <section class="glass fade-in" style="padding: 24px; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 id="home-streak">🔥 0 Days</h2>
+          <div id="home-xp" style="font-weight: bold; color: var(--accent-secondary);">0 XP</div>
+        </div>
+        <div style="height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden;">
+          <div id="home-progress-bar"
+            style="width: 0%; height: 100%; background: var(--accent-primary); transition: width 0.5s ease;"></div>
+        </div>
+        <p id="home-progress-text" class="text-muted" style="font-size: 0.9rem; margin-top: 8px;">Character 2/40 • Koch
+          Level 1</p>
+      </section>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <button id="btn-start-drill" style="height: 64px;">
+          <span style="font-size: 1.2rem;">Train Now!</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- Screen: Drill -->
+    <main id="screen-drill" class="screen">
+      <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+        <button class="secondary" id="btn-exit-drill" style="padding: 8px 16px; font-size: 0.9rem;">Exit</button>
+        <div id="drill-progress">1/20</div>
+        <div id="drill-accuracy">100%</div>
+      </header>
+
+      <div
+        style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px;">
+
+        <div style="position: relative;">
+          <div id="audio-visualizer" class="glass"
+            style="width: 120px; height: 120px; border-radius: 60px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">
+            🔊
+          </div>
+          <div id="drill-hint"
+            style="position: absolute; top: -110px; left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 4rem; letter-spacing: 0.5em; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary), 0 0 10px #ffffff; opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);">
+            ...
+          </div>
+        </div>
+
+        <div id="drill-choices" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+          <!-- Choices will be injected here -->
+        </div>
+      </div>
+    </main>
+
+    <!-- Screen: Progress -->
+    <main id="screen-progress" class="screen">
+      <h2>Progress</h2>
+      <p class="text-muted">Mastery Overview</p>
+      <div id="mastery-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 24px;">
+        <!-- A-Z grid injected here -->
+      </div>
+    </main>
+
+    <!-- Screen: Settings -->
+    <main id="screen-settings" class="screen">
+      <h2>Settings</h2>
+      <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 24px;">
+        <div class="setting-item">
+          <label>WPM (Character Speed)</label>
+          <input type="range" min="15" max="30" value="20" id="setting-wpm" style="width: 100%;">
+          <div style="display: flex; justify-content: space-between;" class="text-muted"><span>15</span><span
+              id="val-wpm">20</span><span>30</span></div>
+        </div>
+        <div class="setting-item">
+          <label>Farnsworth Spacing</label>
+          <input type="range" min="5" max="20" value="10" id="setting-farnsworth" style="width: 100%;">
+          <div style="display: flex; justify-content: space-between;" class="text-muted"><span>5</span><span
+              id="val-farnsworth">10</span><span>20</span></div>
+        </div>
+
+        <div class="switch-container">
+          <span>Light Flash</span>
+          <label class="switch">
+            <input type="checkbox" id="setting-light-flash" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div
+          style="margin-top: 40px; border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; flex-direction: column; gap: 16px;">
+          <button id="btn-restart-level" class="secondary" style="width: 100%;">Restart Current Level</button>
+
+          <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px;">
+            <button id="btn-reset-progress" class="danger" style="width: 100%;">Reset All Progress</button>
+            <p class="text-muted" style="font-size: 0.8rem; margin-top: 12px; text-align: center;">This will clear all
+              your XP, streaks, and unlocked characters. This action cannot be undone.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal: Session Complete -->
+    <div id="modal-container" class="modal-overlay">
+      <div class="modal-content glass fade-in">
+        <div style="font-size: 3rem; margin-bottom: 16px;">✨</div>
+        <h2 id="modal-title">Session Complete!</h2>
+        <div id="modal-body" style="margin: 20px 0; font-size: 1.1rem;">
+          <!-- Dynamic stats here -->
+        </div>
+        <button id="modal-btn-close" style="width: 100%;">Continue</button>
+      </div>
+    </div>
+
+    <!-- Modal: Reset Confirmation -->
+    <div id="modal-reset-container" class="modal-overlay">
+      <div class="modal-content glass fade-in">
+        <div style="font-size: 3rem; margin-bottom: 16px;">⚠️</div>
+        <h2 id="modal-reset-title">Reset Progress?</h2>
+        <div id="modal-reset-body" style="margin: 20px 0; font-size: 1.1rem;">
+          <p>This will clear all your XP, streaks, and unlocked characters. This action cannot be undone.</p>
+        </div>
+        <div style="display: flex; gap: 12px; width: 100%;">
+          <button id="modal-btn-reset-cancel" class="secondary" style="flex: 1;">Cancel</button>
+          <button id="modal-btn-reset-confirm" class="danger" style="flex: 1;">Reset All</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Restart Level Confirmation -->
+    <div id="modal-restart-container" class="modal-overlay">
+      <div class="modal-content glass fade-in">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🔄</div>
+        <h2>Restart Level?</h2>
+        <div style="margin: 20px 0; font-size: 1.1rem;">
+          <p>This will reset your current mastery progress for the current character set. Your total XP and unlocked
+            characters will be saved.</p>
+        </div>
+        <div style="display: flex; gap: 12px; width: 100%;">
+          <button id="modal-btn-restart-cancel" class="secondary" style="flex: 1;">Cancel</button>
+          <button id="modal-btn-restart-confirm" style="flex: 1;">Restart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Character Stats -->
+    <div id="modal-char-stats" class="modal-overlay">
+      <div class="modal-content glass fade-in">
+        <div id="stats-char-display"
+          style="font-size: 6rem; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary); margin-bottom: 10px;">
+          A</div>
+        <div id="stats-char-morse" class="text-muted"
+          style="font-size: 1.5rem; letter-spacing: 0.3em; margin-bottom: 24px;">.-</div>
+
+        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">ACCURACY</div>
+            <div id="stats-accuracy" style="font-size: 1.5rem; font-weight: bold;">98%</div>
+          </div>
+          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">ATTEMPTS</div>
+            <div id="stats-attempts" style="font-size: 1.5rem; font-weight: bold;">142</div>
+          </div>
+          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">SPEED</div>
+            <div id="stats-speed" style="font-size: 1.5rem; font-weight: bold;">0.4s</div>
+          </div>
+          <div class="glass" style="padding: 12px; background: rgba(255,255,255,0.03);">
+            <div style="font-size: 0.8rem; color: var(--text-muted);">MASTERY</div>
+            <div id="stats-mastery" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-primary);">Gold
+            </div>
+          </div>
+        </div>
+
+        <button id="modal-btn-stats-close" style="width: 100%;">Close</button>
+      </div>
+    </div>
+
+    <nav class="nav-bar glass">
+      <a href="#" class="nav-item active" data-screen="home">
+        <div class="nav-icon">🏠</div>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item" data-screen="progress">
+        <div class="nav-icon">📈</div>
+        <span>Stats</span>
+      </a>
+      <a href="#" class="nav-item" data-screen="settings">
+        <div class="nav-icon">⚙️</div>
+        <span>Settings</span>
+      </a>
+    </nav>
+  </div>
+</body>
+
+</html>
