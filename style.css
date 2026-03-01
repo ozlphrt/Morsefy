@@ -470,7 +470,9 @@ button.secondary:hover {
 }
 
 #btn-start-drill::before,
-#btn-start-drill::after {
+#btn-start-drill::after,
+#btn-exit-drill::before,
+#btn-exit-drill::after {
   animation: tactical-pulse-green 2.5s ease-in-out infinite;
 }
 
