@@ -1,20 +1,20 @@
 :root {
-  --bg-primary: #121310;
-  --bg-secondary: #171815;
-  --bg-tertiary: #1f211d;
+  --bg-primary: #0a0f08;
+  --bg-secondary: #0f140c;
+  --bg-tertiary: #131a10;
 
-  --accent-primary: #ffb700;
+  --accent-primary: #e6a800;
   --accent-secondary: #dcded3;
-  --accent-success: #33ff33;
-  --accent-warning: #ffb700;
-  --accent-danger: #ff3300;
+  --accent-success: #4cc94c;
+  --accent-warning: #e6a800;
+  --accent-danger: #db4d4d;
 
-  --text-primary: #dcded3;
-  --text-secondary: #a19d8e;
-  --text-muted: #727367;
+  --text-primary: #e8eade;
+  --text-secondary: #b5b1a1;
+  --text-muted: #8a8b7c;
 
-  --glass-bg: #141512;
-  --glass-border: #0d0e0c;
+  --glass-bg: #12180f;
+  --glass-border: #0a0d08;
   --glass-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.8), inset -1px -1px 2px rgba(255, 255, 255, 0.05), 0 2px 0 rgba(255, 255, 255, 0.05);
 
   --font-main: 'VT323', monospace;
@@ -202,21 +202,21 @@ input:checked+.slider:before {
 
 /* Typography */
 h1 {
-  font-size: 3.5rem;
+  font-size: 4rem;
   font-weight: normal;
   color: var(--accent-primary);
-  text-shadow: 0 0 10px rgba(255, 183, 0, 0.4);
+  text-shadow: 0 0 10px rgba(230, 168, 0, 0.4);
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: normal;
 }
 
 .text-muted {
   color: var(--text-muted);
   text-transform: uppercase;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
 }
 
 /* Buttons */
@@ -254,8 +254,25 @@ button.secondary {
 }
 
 button.secondary:hover {
-  background: linear-gradient(to bottom, #464a3d, #2a2d25);
+  background: linear-gradient(to bottom, #42463e, #272a24);
   color: var(--text-primary);
+}
+
+/* Lit Plastic Button States */
+.btn-lit-success {
+  background: #367d36 !important;
+  color: #ffffff !important;
+  border-color: #4dc24d !important;
+  box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.3), inset 0 -4px 10px rgba(0, 0, 0, 0.4), 0 0 15px rgba(54, 125, 54, 0.6) !important;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-lit-danger {
+  background: #992c2c !important;
+  color: #ffffff !important;
+  border-color: #d64545 !important;
+  box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.3), inset 0 -4px 10px rgba(0, 0, 0, 0.4), 0 0 15px rgba(153, 44, 44, 0.6) !important;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5) !important;
 }
 
 /* Navigation Base */
@@ -276,14 +293,15 @@ button.secondary:hover {
 
 .nav-item {
   color: var(--text-muted);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: normal;
   text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   transition: color var(--transition-fast);
+  text-transform: uppercase;
 }
 
 .nav-item.active {

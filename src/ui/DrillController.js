@@ -134,8 +134,8 @@ export class DrillController {
 
         const btns = this.ui.choices.querySelectorAll('button');
         btns.forEach(btn => {
-            if (btn.textContent === target) btn.style.background = 'var(--accent-success)';
-            else if (btn.textContent === selected && !isCorrect) btn.style.background = 'var(--accent-danger)';
+            if (btn.textContent === target) btn.classList.add('btn-lit-success');
+            else if (btn.textContent === selected && !isCorrect) btn.classList.add('btn-lit-danger');
             btn.disabled = true;
         });
 
