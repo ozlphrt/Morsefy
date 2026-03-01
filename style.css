@@ -582,6 +582,31 @@ button.secondary:hover {
   }
 }
 
+/* Modal Polish */
+.modal-px-header {
+  font-family: var(--font-main);
+  font-size: 3.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.modal-px-label {
+  font-family: var(--font-main);
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.modal-px-value {
+  font-family: var(--font-main);
+  font-size: 4rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
 /* Drill Choice Buttons */
 .btn-rugged-glass {
   background: linear-gradient(135deg, #373f45 0%, #202428 100%) !important;
