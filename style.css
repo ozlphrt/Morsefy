@@ -449,6 +449,30 @@ button.secondary:hover {
   right: 16px;
 }
 
+/* Oscillating green light for INITIATE button notches */
+@keyframes tactical-pulse-green {
+
+  0%,
+  100% {
+    background: #111315;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.9), 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  50% {
+    background: #152615;
+    box-shadow:
+      inset 0 3px 5px rgba(0, 0, 0, 0.9),
+      0 1px 1px rgba(255, 255, 255, 0.15),
+      inset 0 0 8px rgba(70, 255, 70, 0.6),
+      0 0 8px rgba(70, 255, 70, 0.3);
+  }
+}
+
+#btn-start-drill::before,
+#btn-start-drill::after {
+  animation: tactical-pulse-green 2.5s ease-in-out infinite;
+}
+
 /* Drill Choice Buttons */
 .btn-rugged-glass {
   background: linear-gradient(135deg, #373f45 0%, #202428 100%) !important;
