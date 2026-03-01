@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Morsefy Font Mockups</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Allerta+Stencil&family=Black+Ops+One&family=Stardos+Stencil:wght@400;700&display=swap');
+
+        body {
+            background-color: #1a1c1e;
+            color: #ffaa33;
+            font-family: sans-serif;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 40px;
+        }
+
+        .header-row>div {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .row-label {
+            color: #888;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .demo-glyph {
+            font-size: 7rem;
+            line-height: 1;
+            text-shadow: 0 0 15px rgba(255, 170, 51, 0.3);
+            display: inline-block;
+        }
+
+        /* Font Families */
+        .font-stardos {
+            font-family: 'Stardos Stencil', cursive;
+            font-weight: 700;
+        }
+
+        .font-blackops {
+            font-family: 'Black Ops One', cursive;
+        }
+
+        .font-allerta {
+            font-family: 'Allerta Stencil', sans-serif;
+        }
+
+        /* Noise 1: Fine Dust / Current Mask */
+        .mask-fine {
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 6 0 0 0 -2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            -webkit-mask-size: 150px;
+        }
+
+        /* Noise 2: Heavy Paint Chipping / Rust */
+        .mask-chunky {
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='2'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 8 0 0 0 -3.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            -webkit-mask-size: 100px;
+        }
+
+        /* Noise 3: Deep Scratches */
+        .mask-scratches {
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.8' numOctaves='2'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 10 0 0 0 -4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            -webkit-mask-size: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 style="color: #fff; margin-bottom: 40px;">Morsefy Typography Engineering</h1>
+        <p style="color: #ccc; margin-bottom: 40px; font-size: 1.2rem; line-height: 1.5;">
+            These are pure CSS and SVG algorithm combinations applied over real Google Fonts.
+            Because they are dynamically generated, they scale beautifully across screen sizes without blurring, unlike
+            static images.
+            Identify the **row** (Font Family) and **column** (Erosion Texture) you want, and we'll apply it!
+        </p>
+
+        <!-- Header -->
+        <div class="grid header-row">
+            <div>Font Family</div>
+            <div>Clean (No Erosion)</div>
+            <div>Fine Texture (Current)</div>
+            <div>Heavy Chips / Rust</div>
+            <div>Deep Scratches</div>
+        </div>
+
+        <!-- Row 1: Stardos -->
+        <div class="grid">
+            <div class="row-label">1. Stardos Stencil<br><small style="color: #555; font-size: 0.8rem;">(Classic Serif
+                    Military)</small></div>
+            <div class="demo-glyph font-stardos">M C</div>
+            <div class="demo-glyph font-stardos mask-fine">M C</div>
+            <div class="demo-glyph font-stardos mask-chunky">M C</div>
+            <div class="demo-glyph font-stardos mask-scratches">M C</div>
+        </div>
+
+        <!-- Row 2: Black Ops One -->
+        <div class="grid">
+            <div class="row-label">2. Black Ops One<br><small style="color: #555; font-size: 0.8rem;">(Heavy Sans-Serif
+                    Block)</small></div>
+            <div class="demo-glyph font-blackops">M C</div>
+            <div class="demo-glyph font-blackops mask-fine">M C</div>
+            <div class="demo-glyph font-blackops mask-chunky">M C</div>
+            <div class="demo-glyph font-blackops mask-scratches">M C</div>
+        </div>
+
+        <!-- Row 3: Allerta Stencil -->
+        <div class="grid">
+            <div class="row-label">3. Allerta Stencil<br><small style="color: #555; font-size: 0.8rem;">(Clean Modern
+                    Stencil)</small></div>
+            <div class="demo-glyph font-allerta">M C</div>
+            <div class="demo-glyph font-allerta mask-fine">M C</div>
+            <div class="demo-glyph font-allerta mask-chunky">M C</div>
+            <div class="demo-glyph font-allerta mask-scratches">M C</div>
+        </div>
+
+    </div>
+</body>
+
+</html>
