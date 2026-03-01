@@ -38,13 +38,13 @@
 
 body {
   background-color: var(--bg-primary);
-  /* Photorealistic Classic Diamond Plate */
+  /* Photorealistic Classic Diamond Plate - Finer & Less Contrasty */
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.25'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='b'%3E%3Cpath d='M 1 -13 C 6 -4, 6 4, 1 15 C -4 4, -4 -4, 1 -13 Z' fill='rgba(0,0,0,0.8)'/%3E%3Cpath d='M 0 -15 C 4 -5, 4 5, 0 15 C -4 5, -4 -5, 0 -15 Z' fill='rgba(35,40,45,0.9)'/%3E%3Cpath d='M 0 -15 C -4 -5, -4 5, 0 15 C -2 5, -2 -5, 0 -13 Z' fill='rgba(255,255,255,0.4)'/%3E%3C/g%3E%3Cuse href='%23b' x='10' y='10' transform='rotate(45 10 10)'/%3E%3Cuse href='%23b' x='30' y='30' transform='rotate(-45 30 30)'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.7) 100%),
-    linear-gradient(to bottom, #1a2024, #0b0d10);
-  background-size: 100% 100%, 40px 40px, 100% 100%, 100% 100%;
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.2'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='b'%3E%3Cpath d='M 1 -13 C 6 -4, 6 4, 1 15 C -4 4, -4 -4, 1 -13 Z' fill='rgba(0,0,0,0.35)'/%3E%3Cpath d='M 0 -15 C 4 -5, 4 5, 0 15 C -4 5, -4 -5, 0 -15 Z' fill='rgba(35,40,45,0.5)'/%3E%3Cpath d='M 0 -15 C -4 -5, -4 5, 0 15 C -2 5, -2 -5, 0 -13 Z' fill='rgba(255,255,255,0.1)'/%3E%3C/g%3E%3Cuse href='%23b' x='10' y='10' transform='rotate(45 10 10)'/%3E%3Cuse href='%23b' x='30' y='30' transform='rotate(-45 30 30)'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.75) 100%),
+    linear-gradient(to bottom, #21282d, #090a0c);
+  background-size: 100% 100%, 18px 18px, 100% 100%, 100% 100%;
   background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-main);
