@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=VT323&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/Morsefy/assets/index-Dkjj95-V.js"></script>
-  <link rel="stylesheet" crossorigin href="/Morsefy/assets/index-BnqNbXWz.css">
+  <script type="module" crossorigin src="/Morsefy/assets/index-CqSngcvm.js"></script>
+  <link rel="stylesheet" crossorigin href="/Morsefy/assets/index-BWc2V29R.css">
 </head>
 
 <body>
@@ -64,8 +64,15 @@
         style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px;">
 
         <div style="position: relative;">
-          <div id="audio-visualizer" class="tx-lamp"
-            style="width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+          <!-- Retro TX Lamp -->
+          <div
+            style="position: relative; width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #444c3c, #1f231b); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 15px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.1), inset 0 -2px 4px rgba(0,0,0,0.5); border: 2px solid #141711;">
+            <!-- Outer Metal Ring inner shadow -->
+            <div
+              style="width: 110px; height: 110px; border-radius: 50%; background: #1a1c17; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 6px 10px rgba(0,0,0,0.9);">
+              <div id="audio-visualizer" class="tx-lamp" style="width: 90px; height: 90px; border-radius: 50%;">
+              </div>
+            </div>
           </div>
           <div id="drill-hint"
             style="position: absolute; top: -110px; left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 4rem; letter-spacing: 0.5em; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary), 0 0 10px #ffffff; opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);">
