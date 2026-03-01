@@ -50,9 +50,14 @@ export class DrillController {
         // Show hint during replay
         if (this.ui.hint) this.ui.hint.style.opacity = '1';
 
-        this.ui.visualizer.classList.add('playing');
+        // Connect lamp to audio signals
+        morseEngine.onSignalStart = () => this.ui.visualizer.classList.add('playing');
+        morseEngine.onSignalEnd = () => this.ui.visualizer.classList.remove('playing');
+
         await morseEngine.playCharacter(targetChar, wpm, farnsworth);
-        this.ui.visualizer.classList.remove('playing');
+
+        morseEngine.onSignalStart = null;
+        morseEngine.onSignalEnd = null;
 
         // Hide hint after replay
         if (this.ui.hint) this.ui.hint.style.opacity = '0';
@@ -87,20 +92,14 @@ export class DrillController {
 
         this.renderChoices(targetChar);
 
-        // Play audio with flash feedback if enabled
-        const { wpm, farnsworth, lightFlashOn } = this.sm.state.settings;
+        // Play audio with reactive TX lamp feedback
+        morseEngine.onSignalStart = () => this.ui.visualizer.classList.add('playing');
+        morseEngine.onSignalEnd = () => this.ui.visualizer.classList.remove('playing');
 
-        if (lightFlashOn) {
-            morseEngine.onSignalStart = () => this.ui.visualizer.classList.add('flash');
-            morseEngine.onSignalEnd = () => this.ui.visualizer.classList.remove('flash');
-        } else {
-            morseEngine.onSignalStart = null;
-            morseEngine.onSignalEnd = null;
-        }
-
-        this.ui.visualizer.classList.add('playing');
         await morseEngine.playCharacter(targetChar, wpm, farnsworth);
-        this.ui.visualizer.classList.remove('playing');
+
+        morseEngine.onSignalStart = null;
+        morseEngine.onSignalEnd = null;
 
         this.startTime = Date.now();
         this.isProcessing = false;

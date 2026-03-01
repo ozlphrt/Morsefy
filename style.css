@@ -1,7 +1,8 @@
 :root {
-  --bg-primary: #1f211d;
-  --bg-secondary: #171815;
-  --bg-tertiary: #141512;
+  --bg-primary: #3d4635;
+  /* Olive Drab Base */
+  --bg-secondary: #2f3629;
+  --bg-tertiary: #252b20;
 
   --accent-primary: #ffb700;
   --accent-secondary: #dcded3;
@@ -11,11 +12,11 @@
 
   --text-primary: #dcded3;
   --text-secondary: #a19d8e;
-  --text-muted: #727367;
+  --text-muted: #858b76;
 
-  --glass-bg: #141512;
-  --glass-border: #0d0e0c;
-  --glass-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.8), inset -1px -1px 2px rgba(255, 255, 255, 0.05), 0 2px 0 rgba(255, 255, 255, 0.05);
+  --glass-bg: #2b3325;
+  --glass-border: #141711;
+  --glass-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.6), inset -1px -1px 2px rgba(255, 255, 255, 0.05), 0 4px 15px rgba(0, 0, 0, 0.6);
 
   --font-main: 'VT323', monospace;
   --transition-fast: 0.1s ease;
@@ -31,11 +32,12 @@
 
 body {
   background-color: var(--bg-primary);
-  /* Rugged Military Mesh Texture */
+  /* Rugged Military Dimple/Dot Pattern */
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E"),
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.4) 0px, rgba(0, 0, 0, 0.4) 2px, transparent 2px, transparent 10px),
-    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.4) 0px, rgba(0, 0, 0, 0.4) 2px, transparent 2px, transparent 10px);
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E"),
+    radial-gradient(circle at center, rgba(15, 18, 12, 0.8) 1.5px, transparent 2px),
+    linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.5));
+  background-size: 100% 100%, 8px 8px, 100% 100%;
   color: var(--text-primary);
   font-family: var(--font-main);
   line-height: 1.5;
@@ -281,15 +283,38 @@ h2 {
 
 /* TX Lamp */
 .tx-lamp {
-  background: radial-gradient(circle at 30% 30%, #5a1a1a, #2a0b0b);
-  border: 4px solid #0d0e0c;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 5px rgba(0, 0, 0, 0.9);
+  background: radial-gradient(circle at 40% 30%, #5a1a1a 0%, #1a0505 80%);
+  border: 4px solid #080a07;
+  box-shadow:
+    inset 0 6px 10px rgba(255, 255, 255, 0.1),
+    /* Domed glass highlight */
+    inset 0 -4px 10px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(0, 0, 0, 0.9);
   transition: all 0.05s ease;
+  position: relative;
+}
+
+.tx-lamp::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 30%;
+  height: 20%;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+  filter: blur(2px);
+  pointer-events: none;
 }
 
 .tx-lamp.playing {
-  background: radial-gradient(circle at 40% 40%, #ff6b6b, #cc0000);
-  box-shadow: inset 0 2px 5px rgba(255, 107, 107, 0.5), 0 0 20px rgba(255, 51, 0, 0.8), 0 0 40px rgba(255, 51, 0, 0.4);
+  background: radial-gradient(circle at 40% 40%, #ff6b6b 0%, #cc0000 60%, #4a0000 100%);
+  box-shadow:
+    inset 0 6px 10px rgba(255, 200, 200, 0.4),
+    inset 0 -4px 10px rgba(100, 0, 0, 0.8),
+    0 0 30px rgba(255, 20, 0, 0.8),
+    0 0 60px rgba(255, 20, 0, 0.3);
 }
 
 /* Buttons */
