@@ -40,9 +40,9 @@ body {
   background-color: var(--bg-primary);
   /* Photorealistic Diamond Plate */
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.25'/%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='rgba(0,0,0,0.6)'%3E%3Cpath d='M20 6L28 15L20 24L12 15z M0 26L8 35L0 44L-8 35z M40 26L48 35L40 44L32 35z'/%3E%3C/g%3E%3Cg fill='rgba(255,255,255,0.08)'%3E%3Cpath d='M20 4L28 13L20 22L12 13z M0 24L8 33L0 42L-8 33z M40 24L48 33L40 42L32 33z'/%3E%3C/g%3E%3Cg fill='rgba(0,0,0,0.6)'%3E%3Cpath d='M10 26L18 35L10 44L2 35z M30 6L38 15L30 24L22 15z' transform='rotate(90 20 20)'/%3E%3C/g%3E%3Cg fill='rgba(255,255,255,0.08)'%3E%3Cpath d='M10 24L18 33L10 42L2 33z M30 4L38 13L30 22L22 13z' transform='rotate(90 20 20)'/%3E%3C/g%3E%3C/svg%3E"),
-    linear-gradient(to bottom, #30373c, #1a1e21);
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
   background-size: 100% 100%, 60px 60px, 100% 100%;
   background-attachment: fixed;
   color: var(--text-primary);
@@ -292,12 +292,15 @@ h2 {
 
 /* TX Lamp */
 .tx-lamp {
-  background: radial-gradient(circle at 40% 30%, #5a1a1a 0%, #1a0505 80%);
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.3' style='mix-blend-mode: multiply;'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 40% 30%, #5a1a1a 0%, #1a0505 80%);
   border: 4px solid #080a07;
   box-shadow:
-    inset 0 6px 10px rgba(255, 255, 255, 0.1),
+    inset 0 6px 15px rgba(255, 255, 255, 0.1),
     /* Domed glass highlight */
-    inset 0 -4px 10px rgba(0, 0, 0, 0.8),
+    inset 0 -6px 20px rgba(0, 0, 0, 0.9),
+    inset 0 0 10px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.9);
   transition: all 0.05s ease;
   position: relative;
@@ -310,7 +313,7 @@ h2 {
   left: 15%;
   width: 30%;
   height: 20%;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 50%;
   transform: rotate(-30deg);
   filter: blur(2px);
@@ -318,12 +321,14 @@ h2 {
 }
 
 .tx-lamp.playing {
-  background: radial-gradient(circle at 40% 40%, #ff6b6b 0%, #cc0000 60%, #4a0000 100%);
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.2' style='mix-blend-mode: multiply;'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 40% 40%, #e65c5c 0%, #a61c1c 60%, #3a0000 100%);
   box-shadow:
-    inset 0 6px 10px rgba(255, 200, 200, 0.4),
-    inset 0 -4px 10px rgba(100, 0, 0, 0.8),
-    0 0 30px rgba(255, 20, 0, 0.8),
-    0 0 60px rgba(255, 20, 0, 0.3);
+    inset 0 6px 10px rgba(255, 180, 180, 0.3),
+    inset 0 -4px 10px rgba(80, 0, 0, 0.9),
+    0 0 20px rgba(230, 50, 20, 0.7),
+    0 0 40px rgba(230, 50, 20, 0.3);
 }
 
 /* Buttons */
@@ -377,14 +382,14 @@ button.secondary:hover {
 /* Lit and Unlit Plastic Button States */
 .btn-rugged-glass {
   background: linear-gradient(135deg, #373f45 0%, #202428 100%) !important;
-  border: 1px solid #111 !important;
+  border: 1px solid #111;
   color: var(--text-primary) !important;
   box-shadow:
     0 12px 20px rgba(0, 0, 0, 0.9),
     inset 0 4px 5px rgba(255, 255, 255, 0.15),
     inset 0 -4px 5px rgba(0, 0, 0, 0.6),
     inset 0 0 0 4px #424a51,
-    inset 0 0 0 5px #0a0b0d !important;
+    inset 0 0 0 5px #0a0b0d;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.8) !important;
   border-radius: 12px !important;
   transition: all 0.1s;
@@ -458,19 +463,19 @@ button.secondary:hover {
 }
 
 .btn-lit-success {
-  background: #367d36 !important;
-  color: #ffffff !important;
-  border-color: #2b592b !important;
-  box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.3), inset 0 -4px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(54, 125, 54, 0.8), 0 4px 0 #141a12 !important;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8) !important;
+  background: #3e5e3e !important;
+  color: #e0eee0 !important;
+  border-color: #2b422b !important;
+  box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.1), inset 0 -4px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(62, 94, 62, 0.6), 0 4px 0 #141a12 !important;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5) !important;
 }
 
 .btn-lit-danger {
-  background: #992c2c !important;
-  color: #ffffff !important;
-  border-color: #6e2020 !important;
-  box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.3), inset 0 -4px 10px rgba(0, 0, 0, 0.4), 0 0 20px rgba(153, 44, 44, 0.8), 0 4px 0 #141a12 !important;
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8) !important;
+  background: #733a3a !important;
+  color: #eed0d0 !important;
+  border-color: #522929 !important;
+  box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.1), inset 0 -4px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(115, 58, 58, 0.6), 0 4px 0 #141a12 !important;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5) !important;
 }
 
 /* Navigation Base */
