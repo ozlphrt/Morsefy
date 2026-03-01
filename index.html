@@ -57,9 +57,8 @@
     </main>
 
     <!-- Screen: Drill -->
-    <main id="screen-drill" class="screen" style="padding-bottom: 8px;">
-      <header
-        style="display: flex; justify-content: space-between; align-items: stretch; height: 64px; margin-bottom: 24px;">
+    <main id="screen-drill" class="screen" style="justify-content: flex-end; padding-bottom: 24px; gap: 24px;">
+      <header style="display: flex; justify-content: space-between; align-items: stretch; height: 64px; width: 100%;">
         <button id="btn-exit-drill" class="btn-tactical"
           style="padding: 0 60px; height: 100%; font-size: 1.5rem;">EXIT</button>
         <div class="glass"
@@ -75,29 +74,25 @@
         </div>
       </header>
 
-      <div
-        style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 24px; padding-bottom: 24px;">
-
-        <div style="position: relative;">
-          <!-- Retro TX Lamp -->
-          <div class="glass btn-rugged-glass"
-            style="position: relative; width: 160px; height: 160px; border-radius: 16px !important; display: flex; align-items: center; justify-content: center;">
-            <!-- Outer Metal Ring inner shadow -->
-            <div
-              style="width: 110px; height: 110px; border-radius: 50%; background: #1a1c17; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 6px 10px rgba(0,0,0,0.9), 0 2px 4px rgba(255,255,255,0.1);">
-              <div id="audio-visualizer" class="tx-lamp" style="width: 90px; height: 90px; border-radius: 50%;">
-              </div>
+      <div style="position: relative; align-self: center;">
+        <!-- Retro TX Lamp -->
+        <div class="glass btn-rugged-glass"
+          style="position: relative; width: 160px; height: 160px; border-radius: 16px !important; display: flex; align-items: center; justify-content: center;">
+          <!-- Outer Metal Ring inner shadow -->
+          <div
+            style="width: 110px; height: 110px; border-radius: 50%; background: #1a1c17; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 6px 10px rgba(0,0,0,0.9), 0 2px 4px rgba(255,255,255,0.1);">
+            <div id="audio-visualizer" class="tx-lamp" style="width: 90px; height: 90px; border-radius: 50%;">
             </div>
           </div>
-          <div id="drill-hint"
-            style="position: absolute; top: -110px; left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 4rem; letter-spacing: 0.5em; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary), 0 0 10px #ffffff; opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);">
-            ...
-          </div>
         </div>
+        <div id="drill-hint"
+          style="position: absolute; top: -110px; left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 4rem; letter-spacing: 0.5em; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary), 0 0 10px #ffffff; opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);">
+          ...
+        </div>
+      </div>
 
-        <div id="drill-choices" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
-          <!-- Choices will be injected here -->
-        </div>
+      <div id="drill-choices" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+        <!-- Choices will be injected here -->
       </div>
     </main>
 
