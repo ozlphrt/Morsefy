@@ -31,10 +31,11 @@
 
 body {
   background-color: var(--bg-primary);
-  /* Dark Dusted Texture Pattern */
+  /* Rugged Military Mesh Texture */
   background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E"),
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 2px, transparent 2px, transparent 4px);
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.4) 0px, rgba(0, 0, 0, 0.4) 2px, transparent 2px, transparent 10px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.4) 0px, rgba(0, 0, 0, 0.4) 2px, transparent 2px, transparent 10px);
   color: var(--text-primary);
   font-family: var(--font-main);
   line-height: 1.5;
@@ -75,7 +76,7 @@ body {
   pointer-events: none;
 }
 
-/* Rugged Bolts in Corners */
+/* Real Screw Heads in Corners */
 .glass::after {
   content: "";
   position: absolute;
@@ -85,14 +86,13 @@ body {
   left: 6px;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 0 0, #0a0a09 3px, transparent 4px),
-    radial-gradient(circle at 100% 0, #0a0a09 3px, transparent 4px),
-    radial-gradient(circle at 0 100%, #0a0a09 3px, transparent 4px),
-    radial-gradient(circle at 100% 100%, #0a0a09 3px, transparent 4px),
-    radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.05) 4px, transparent 5px),
-    radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.05) 4px, transparent 5px),
-    radial-gradient(circle at 0 100%, rgba(255, 255, 255, 0.05) 4px, transparent 5px),
-    radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.05) 4px, transparent 5px);
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5" fill="%234a4c43" stroke="%230d0e0c" stroke-width="1.5"/><line x1="2" y1="6" x2="10" y2="6" stroke="%230d0e0c" stroke-width="2" transform="rotate(35 6 6)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5" fill="%234a4c43" stroke="%230d0e0c" stroke-width="1.5"/><line x1="2" y1="6" x2="10" y2="6" stroke="%230d0e0c" stroke-width="2" transform="rotate(-15 6 6)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5" fill="%234a4c43" stroke="%230d0e0c" stroke-width="1.5"/><line x1="2" y1="6" x2="10" y2="6" stroke="%230d0e0c" stroke-width="2" transform="rotate(70 6 6)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5" fill="%234a4c43" stroke="%230d0e0c" stroke-width="1.5"/><line x1="2" y1="6" x2="10" y2="6" stroke="%230d0e0c" stroke-width="2" transform="rotate(-60 6 6)"/></svg>');
+  background-position: top left, top right, bottom left, bottom right;
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
   z-index: 10;
 }
 
@@ -274,10 +274,13 @@ button::after {
   left: 4px;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 0 0, #141512 2px, transparent 3px),
-    radial-gradient(circle at 100% 0, #141512 2px, transparent 3px),
-    radial-gradient(circle at 0 100%, #141512 2px, transparent 3px),
-    radial-gradient(circle at 100% 100%, #141512 2px, transparent 3px);
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="%232b2d25" stroke="%230d0e0c" stroke-width="1"/><line x1="1" y1="4" x2="7" y2="4" stroke="%230d0e0c" stroke-width="1.5" transform="rotate(45 4 4)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="%232b2d25" stroke="%230d0e0c" stroke-width="1"/><line x1="1" y1="4" x2="7" y2="4" stroke="%230d0e0c" stroke-width="1.5" transform="rotate(-25 4 4)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="%232b2d25" stroke="%230d0e0c" stroke-width="1"/><line x1="1" y1="4" x2="7" y2="4" stroke="%230d0e0c" stroke-width="1.5" transform="rotate(80 4 4)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="3.5" fill="%232b2d25" stroke="%230d0e0c" stroke-width="1"/><line x1="1" y1="4" x2="7" y2="4" stroke="%230d0e0c" stroke-width="1.5" transform="rotate(-10 4 4)"/></svg>');
+  background-position: top left, top right, bottom left, bottom right;
+  background-repeat: no-repeat;
+  background-size: 8px 8px;
 }
 
 button:hover {
@@ -317,16 +320,19 @@ button.secondary:hover {
 .btn-plastic::before {
   content: "";
   position: absolute;
-  top: 6px;
-  right: 6px;
-  bottom: 6px;
-  left: 6px;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  left: 8px;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 0 0, #0d0e0c 3px, transparent 4px),
-    radial-gradient(circle at 100% 0, #0d0e0c 3px, transparent 4px),
-    radial-gradient(circle at 0 100%, #0d0e0c 3px, transparent 4px),
-    radial-gradient(circle at 100% 100%, #0d0e0c 3px, transparent 4px);
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.5" fill="%231a1d17" stroke="%23000" stroke-width="1"/><line x1="2" y1="5" x2="8" y2="5" stroke="%23000" stroke-width="1.5" transform="rotate(20 5 5)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.5" fill="%231a1d17" stroke="%23000" stroke-width="1"/><line x1="2" y1="5" x2="8" y2="5" stroke="%23000" stroke-width="1.5" transform="rotate(-35 5 5)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.5" fill="%231a1d17" stroke="%23000" stroke-width="1"/><line x1="2" y1="5" x2="8" y2="5" stroke="%23000" stroke-width="1.5" transform="rotate(65 5 5)"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="4.5" fill="%231a1d17" stroke="%23000" stroke-width="1"/><line x1="2" y1="5" x2="8" y2="5" stroke="%23000" stroke-width="1.5" transform="rotate(-5 5 5)"/></svg>');
+  background-position: top left, top right, bottom left, bottom right;
+  background-repeat: no-repeat;
+  background-size: 10px 10px;
   z-index: 10;
 }
 
