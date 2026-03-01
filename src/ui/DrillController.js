@@ -115,9 +115,9 @@ export class DrillController {
         choices.forEach(char => {
             const btn = document.createElement('button');
             btn.textContent = char;
-            btn.style.fontSize = '2.5rem';
-            btn.style.height = '120px';
-            btn.className = 'glass';
+            btn.style.fontSize = '5rem';
+            btn.style.height = '160px';
+            btn.className = 'btn-plastic';
             btn.onclick = () => this.handleAnswer(char);
             this.ui.choices.appendChild(btn);
         });
