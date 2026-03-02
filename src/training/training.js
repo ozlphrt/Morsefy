@@ -149,8 +149,7 @@ class TrainingEngine {
         const effectiveWpm = settings.wpm + Math.floor(level / 5);
         const isBlindOps = level >= 15;
 
-        // Respect manual user override: if user explicitly turned it ON, keep it on.
-        // If they left it on default, at level 15+ it becomes "Blind Ops" (off)
+        // The lamp flashes strictly based on the user's CFG settings.
         const lightFlashOn = settings.lightFlashOn;
 
         return {
