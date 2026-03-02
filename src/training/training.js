@@ -2,7 +2,7 @@
  * Training Engine - Handles Koch progression and Spaced Repetition
  */
 
-export const KOCH_ORDER = "KMRSTUALOIP.EGHCYQXWVBZF0987654321/?.";
+export const KOCH_ORDER = "KMRSTUALOIP.EGHCYQXWVBZF0987654321/?";
 
 class TrainingEngine {
     constructor(stateManager) {

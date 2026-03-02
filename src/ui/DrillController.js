@@ -224,25 +224,39 @@ export class DrillController {
             `;
         } else {
             title.innerHTML = `<span class="modal-px-header">SESSION END</span>`;
-            const { history } = this.sm.state.progress;
+            const { history, unlockedChars } = this.sm.state.progress;
             const recent = history.slice(-60);
             const acc = recent.length > 0 ? Math.round((recent.reduce((a, b) => a + b, 0) / recent.length) * 100) : 0;
+            const level = unlockedChars.length - 1;
+            const evalProgress = history.length;
 
             body.innerHTML = `
-              <div style="margin-bottom: 24px;">
+              <div style="margin-bottom: 24px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="glass" style="padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <div class="modal-px-label" style="font-size: 0.75rem;">CURRENT LEVEL</div>
+                    <div class="modal-px-value" style="font-size: 1.8rem; color: var(--text-primary); margin-top: 4px;">LVL ${level}</div>
+                </div>
+                <div class="glass" style="padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <div class="modal-px-label" style="font-size: 0.75rem;">EVALUATION</div>
+                    <div class="modal-px-value" style="font-size: 1.8rem; color: var(--accent-primary); margin-top: 4px;">${evalProgress}/60</div>
+                </div>
+              </div>
+
+              <div style="margin-bottom: 24px; padding: 20px; background: rgba(255,170,51,0.03); border-radius: 16px; border: 1px solid rgba(255,170,51,0.1);">
                 <div class="modal-px-label">OPERATIONAL ACCURACY</div>
                 <div class="modal-px-value" style="color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'}; margin-top: 4px;">${acc}%</div>
                 <div class="modal-px-label" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; opacity: 0.6; font-weight: 400;">TARGET: 96% TO ADVANCE</div>
               </div>
+
               <div style="display: flex; justify-content: space-around; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
                 <div>
                   <div class="modal-px-label">BONUS XP</div>
-                  <div class="modal-px-value" style="font-size: 2.2rem; color: var(--text-primary); margin-top: 4px;">+50</div>
+                  <div class="modal-px-value" style="font-size: 1.8rem; color: var(--text-primary); margin-top: 4px;">+50</div>
                 </div>
                 <div style="width: 1px; background: rgba(255,255,255,0.1); height: 40px;"></div>
                 <div>
                   <div class="modal-px-label">STREAK</div>
-                  <div class="modal-px-value" style="font-size: 2.2rem; color: var(--accent-primary); margin-top: 4px;">${this.sm.state.progress.streak}d</div>
+                  <div class="modal-px-value" style="font-size: 1.8rem; color: var(--accent-primary); margin-top: 4px;">${this.sm.state.progress.streak}d</div>
                 </div>
               </div>
             `;
