@@ -1,4 +1,5 @@
 import { morseEngine, MORSE_MAP } from '../engine/engine.js';
+import { MorseDecoder } from '../engine/MorseDecoder.js';
 
 export class DrillController {
     constructor(trainingEngine, stateManager) {
@@ -16,18 +17,82 @@ export class DrillController {
             accuracy: document.getElementById('drill-accuracy'),
             visualizer: document.getElementById('audio-visualizer'),
             hint: document.getElementById('drill-hint'),
+            commsInput: document.getElementById('comms-input'),
+            btnTX: document.getElementById('btn-comms-tx'),
+            btnRX: document.getElementById('btn-comms-rx'),
+            rxIndicator: document.getElementById('rx-status-indicator'),
+            rxLevelContainer: document.getElementById('rx-level-container'),
+            rxLevelBar: document.getElementById('rx-level-bar'),
+            rxToneDot: document.getElementById('rx-tone-dot'),
+            rxDebugFreq: document.getElementById('rx-debug-freq'),
+            rxDebugThr: document.getElementById('rx-debug-thr'),
+            rxDebugBuffer: document.getElementById('rx-debug-buffer'),
+            modalComingSoon: document.getElementById('modal-coming-soon'),
+            btnComingSoonClose: document.getElementById('modal-btn-coming-soon-close'),
         };
 
+        this.decoder = new MorseDecoder(morseEngine.audioCtx);
+        this.initComms();
         this.initEvents();
     }
 
+    initComms() {
+        if (!this.decoder) return;
+
+        this.decoder.onCharDecoded = (char) => {
+            if (this.ui.commsInput) {
+                this.ui.commsInput.value += char;
+                // Auto-scroll textarea to bottom
+                this.ui.commsInput.scrollTop = this.ui.commsInput.scrollHeight;
+            }
+        };
+
+        this.decoder.onLevelUpdate = (data) => {
+            if (this.ui.rxLevelBar) {
+                this.ui.rxLevelBar.style.width = `${Math.min(100, data.level)}%`;
+            }
+            if (this.ui.rxToneDot) {
+                this.ui.rxToneDot.style.background = data.isTone ? 'var(--accent-success)' : '#222';
+                this.ui.rxToneDot.style.boxShadow = data.isTone ? '0 0 10px var(--accent-success)' : 'none';
+            }
+            if (this.ui.rxDebugFreq) {
+                this.ui.rxDebugFreq.textContent = data.peakFreq || '--';
+            }
+            if (this.ui.rxDebugThr) {
+                this.ui.rxDebugThr.textContent = data.threshold || '--';
+            }
+            if (this.ui.rxDebugBuffer) {
+                this.ui.rxDebugBuffer.textContent = data.buffer || 'WAIT';
+            }
+        };
+
+        this.decoder.onStatusChange = (isActive) => {
+            if (this.ui.btnRX) this.ui.btnRX.classList.toggle('active', isActive);
+            if (this.ui.rxIndicator) this.ui.rxIndicator.classList.toggle('active', isActive);
+            if (this.ui.rxLevelContainer) {
+                this.ui.rxLevelContainer.style.display = isActive ? 'flex' : 'none';
+            }
+        };
+    }
+
     initEvents() {
-        // Hint logic: Hold to peek
+        // Hint logic: Hold to peek (Morse code in text box)
+        let originalText = "";
         const showHint = () => {
-            if (this.ui.hint) this.ui.hint.style.opacity = '1';
+            const targetChar = this.currentSession[this.currentIndex];
+            if (!targetChar || !this.ui.commsInput) return;
+
+            // Store current text and switch to peek mode
+            originalText = this.ui.commsInput.value;
+            this.ui.commsInput.value = MORSE_MAP[targetChar.toUpperCase()] || "...";
+            this.ui.commsInput.classList.add('peek');
         };
         const hideHint = () => {
-            if (this.ui.hint) this.ui.hint.style.opacity = '0';
+            if (!this.ui.commsInput) return;
+
+            // Restore original text
+            this.ui.commsInput.value = originalText;
+            this.ui.commsInput.classList.remove('peek');
         };
 
         this.ui.visualizer?.addEventListener('mousedown', showHint);
@@ -41,16 +106,79 @@ export class DrillController {
 
         // Click to replay + show hint
         this.ui.visualizer?.addEventListener('click', () => this.replay());
+
+        // COMMS Events
+        this.ui.btnTX?.addEventListener('click', () => this.handleTX());
+        this.ui.btnRX?.addEventListener('click', () => this.toggleRX());
+        this.ui.btnComingSoonClose?.addEventListener('click', () => {
+            if (this.ui.modalComingSoon) this.ui.modalComingSoon.classList.remove('active');
+        });
+    }
+
+    async handleTX() {
+        const text = this.ui.commsInput?.value;
+        if (!text) return;
+
+        if (this.isProcessing) {
+            await morseEngine.stop();
+        }
+
+        this.isProcessing = true;
+        const effective = this.training.getEffectiveSettings(this.sm.state.settings);
+
+        // Visual feedback during TX
+        morseEngine.onSignalStart = () => this.ui.visualizer.classList.add('playing');
+        morseEngine.onSignalEnd = () => this.ui.visualizer.classList.remove('playing');
+
+        try {
+            await morseEngine.playString(text, effective.wpm, effective.farnsworth, (charIndex) => {
+                if (this.ui.commsInput) {
+                    this.ui.commsInput.focus();
+                    this.ui.commsInput.setSelectionRange(charIndex, charIndex + 1);
+                }
+            });
+        } finally {
+            morseEngine.onSignalStart = null;
+            morseEngine.onSignalEnd = null;
+            this.isProcessing = false;
+
+            // Clear selection/highlight after transmission
+            if (this.ui.commsInput) {
+                this.ui.commsInput.setSelectionRange(text.length, text.length);
+                this.ui.commsInput.blur();
+            }
+        }
+    }
+
+
+    async toggleRX() {
+        if (this.ui.modalComingSoon) {
+            this.ui.modalComingSoon.classList.add('active');
+        }
+        // RX functionality is disabled for v1.3.1
+        /*
+        if (!this.decoder.isListening) {
+            await morseEngine.init();
+            this.decoder.audioCtx = morseEngine.audioCtx;
+            await this.decoder.start();
+        } else {
+            this.decoder.stop();
+        }
+        */
     }
 
     async replay() {
         if (this.isProcessing) return;
         const targetChar = this.currentSession[this.currentIndex];
         const effective = this.training.getEffectiveSettings(this.sm.state.settings);
-        const { wpm, farnsworth, lightFlashOn } = effective;
+        const { wpm, farnsworth } = effective;
 
         // Show hint during replay
-        if (this.ui.hint) this.ui.hint.style.opacity = '1';
+        if (this.ui.hint) {
+            this.ui.hint.style.opacity = '1';
+            // Show the dots/dashes clearly
+            this.ui.hint.textContent = MORSE_MAP[targetChar.toUpperCase()] || '...';
+        }
 
         // Connect lamp to audio signals
         morseEngine.onSignalStart = () => this.ui.visualizer.classList.add('playing');
@@ -61,9 +189,14 @@ export class DrillController {
         morseEngine.onSignalStart = null;
         morseEngine.onSignalEnd = null;
 
-        // Hide hint after replay
-        if (this.ui.hint) this.ui.hint.style.opacity = '0';
+        // Keep hint visible for 1s after replay then hide
+        setTimeout(() => {
+            if (this.ui.hint && !this.ui.visualizer.classList.contains('playing')) {
+                this.ui.hint.style.opacity = '0';
+            }
+        }, 1000);
     }
+
 
     start() {
         this.currentSession = this.training.generateSession(20);

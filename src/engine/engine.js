@@ -52,6 +52,53 @@ class MorseEngine {
         await this.init();
     }
 
+
+    async stop() {
+        if (this.audioCtx) {
+            // Hard stop by suspending or we could track all active oscillators
+            // For now, let's just use a flag to stop the playback loops
+            this.forceStop = true;
+            await new Promise(resolve => setTimeout(resolve, 100));
+            this.forceStop = false;
+        }
+    }
+
+    async playString(text, wpm = 20, farnsworth = null, onCharStart = null) {
+        await this.init();
+        this.forceStop = false;
+
+        const words = text.toUpperCase().split(' ');
+        const dotDuration = 1.2 / wpm;
+        const charGap = farnsworth ? (1.2 / farnsworth) * 3 : dotDuration * 3;
+        const wordGap = dotDuration * 7;
+
+        let absoluteIndex = 0;
+
+        for (let i = 0; i < words.length; i++) {
+            if (this.forceStop) break;
+            const word = words[i];
+
+            for (let j = 0; j < word.length; j++) {
+                if (this.forceStop) break;
+
+                if (onCharStart) onCharStart(absoluteIndex);
+                await this.playCharacter(word[j], wpm, farnsworth);
+
+                // Add character gap after each character within the word
+                if (j < word.length - 1) {
+                    await this.sleep(charGap);
+                }
+                absoluteIndex++;
+            }
+
+            if (i < words.length - 1) {
+                if (onCharStart) onCharStart(absoluteIndex);
+                await this.sleep(wordGap);
+                absoluteIndex++;
+            }
+        }
+    }
+
     async playCharacter(char, wpm = 20, farnsworth = null) {
         await this.init();
         const code = MORSE_MAP[char.toUpperCase()];
@@ -69,6 +116,7 @@ class MorseEngine {
         const charGap = farnsworth ? (1.2 / farnsworth) * 3 : dotDuration * 3;
 
         for (let i = 0; i < code.length; i++) {
+            if (this.forceStop) break;
             const symbol = code[i];
             if (symbol === ' ') {
                 await this.sleep(charGap);
