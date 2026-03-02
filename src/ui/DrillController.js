@@ -45,7 +45,8 @@ export class DrillController {
     async replay() {
         if (this.isProcessing) return;
         const targetChar = this.currentSession[this.currentIndex];
-        const { wpm, farnsworth } = this.sm.state.settings;
+        const effective = this.training.getEffectiveSettings(this.sm.state.settings);
+        const { wpm, farnsworth, lightFlashOn } = effective;
 
         // Show hint during replay
         if (this.ui.hint) this.ui.hint.style.opacity = '1';
@@ -92,8 +93,9 @@ export class DrillController {
 
         this.renderChoices(targetChar);
 
-        // Fetch settings from state manager
-        const { wpm, farnsworth, lightFlashOn } = this.sm.state.settings;
+        // Fetch effective settings (including auto-boosts and Blind Ops)
+        const effective = this.training.getEffectiveSettings(this.sm.state.settings);
+        const { wpm, farnsworth, lightFlashOn } = effective;
 
         // Play audio with conditional reactive TX lamp feedback
         morseEngine.onSignalStart = () => {
@@ -206,11 +208,27 @@ export class DrillController {
 
         if (evaluation.status === 'unlocked') {
             title.innerHTML = `<span class="modal-px-header" style="color: var(--accent-success);">LEVEL UP</span>`;
+            const level = this.sm.state.progress.unlockedChars.length - 1;
+
+            const tierHtml = level % 5 === 0 ? `
+              <div style="margin-top: 20px; padding: 12px; background: rgba(255,170,51,0.1); border: 1px solid rgba(255,170,51,0.3); border-radius: 8px; text-align: left;">
+                <div class="modal-px-label" style="color: var(--accent-primary); font-size: 0.7rem; letter-spacing: 1px;">AUTO-SPEED BOOST: ACTIVATED</div>
+                <div style="font-size: 0.9rem; color: var(--text-primary); margin-top: 4px; font-weight: 500;">SYSTEM OPERATING AT +${Math.floor(level / 5)} WPM</div>
+              </div>
+            ` : level === 15 ? `
+              <div style="margin-top: 20px; padding: 12px; background: rgba(255,170,51,0.1); border: 1px solid var(--accent-danger); border-radius: 8px; text-align: left;">
+                <div class="modal-px-label" style="color: var(--accent-danger); font-size: 0.7rem; letter-spacing: 1px;">BLIND OPS: ENGAGED</div>
+                <div style="font-size: 0.9rem; color: var(--text-primary); margin-top: 4px; font-weight: 500;">TX LAMP DISABLED — AURAL PATTERN ONLY</div>
+              </div>
+            ` : '';
+
             body.innerHTML = `
                 <div style="font-size: 6rem; margin-bottom: 16px; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary); font-family: 'Stardos Stencil', serif;" class="distressed-stencil">${evaluation.char}</div>
                 <div style="margin-bottom: 16px;">
                     <div class="modal-px-label" style="color: var(--accent-success);">NEW CHARACTER ADDED</div>
-                    <p style="margin-top: 8px;">Character <strong>${evaluation.char}</strong> is now cleared for operations.</p>
+                    <p style="margin-top: 8px; font-size: 1.1rem;">Character <strong>${evaluation.char}</strong> is now cleared for operations.</p>
+                    <div style="margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">NEW LEVEL: <span style="color: var(--text-primary); font-weight: bold;">${level}</span></div>
+                    ${tierHtml}
                 </div>
             `;
         } else if (evaluation.status === 'regressed') {
@@ -227,8 +245,13 @@ export class DrillController {
             const { history, unlockedChars } = this.sm.state.progress;
             const recent = history.slice(-60);
             const acc = recent.length > 0 ? Math.round((recent.reduce((a, b) => a + b, 0) / recent.length) * 100) : 0;
+            const effective = this.training.getEffectiveSettings(this.sm.state.settings);
             const level = unlockedChars.length - 1;
             const evalProgress = history.length;
+
+            const boostHtml = effective.speedBoost > 0 ? `
+              <div style="font-size: 0.8rem; color: var(--accent-primary); margin-top: 2px;">+${effective.speedBoost} WPM BOOST</div>
+            ` : '';
 
             body.innerHTML = `
               <div style="margin-bottom: 24px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
@@ -246,6 +269,7 @@ export class DrillController {
                 <div class="modal-px-label">OPERATIONAL ACCURACY</div>
                 <div class="modal-px-value" style="color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'}; margin-top: 4px;">${acc}%</div>
                 <div class="modal-px-label" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; opacity: 0.6; font-weight: 400;">TARGET: 96% TO ADVANCE</div>
+                ${boostHtml}
               </div>
 
               <div style="display: flex; justify-content: space-around; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">

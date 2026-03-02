@@ -143,6 +143,24 @@ class TrainingEngine {
         }
         return null;
     }
+
+    getEffectiveSettings(settings) {
+        const level = this.sm.state.progress.unlockedChars.length - 1;
+        const effectiveWpm = settings.wpm + Math.floor(level / 5);
+        const isBlindOps = level >= 15;
+        const lightFlashOn = isBlindOps ? false : settings.lightFlashOn;
+
+        return {
+            ...settings,
+            wpm: effectiveWpm,
+            lightFlashOn,
+            isBlindOps,
+            speedBoost: Math.floor(level / 5)
+        };
+    }
 }
+
+export const BLIND_OPS_LEVEL = 15;
+export const SPEED_RAMP_STEP = 5;
 
 export const trainingEngine = (sm) => new TrainingEngine(sm);
