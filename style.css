@@ -659,12 +659,13 @@ button.secondary:hover {
   background-size: 14px 14px;
 }
 
-.btn-rugged-glass:active {
-  transform: translateY(4px);
+.btn-rugged-glass:active,
+.btn-rugged-glass.pressed {
+  transform: translateY(6px);
   box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.9),
-    inset 0 2px 6px rgba(0, 0, 0, 0.8),
-    inset 0 0 0 4px #373f45 !important;
+    0 4px 8px rgba(0, 0, 0, 0.9),
+    inset 0 4px 8px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 4px #2b3136 !important;
 }
 
 .btn-plastic {
@@ -828,7 +829,9 @@ button.secondary:hover {
   outline: none;
   text-shadow: 0 0 12px rgba(255, 170, 51, 0.5);
   resize: none;
-  padding: 0;
+  height: 100px;
+  max-height: 100px;
+  box-sizing: border-box;
   overflow-y: auto;
 }
 
@@ -846,6 +849,26 @@ button.secondary:hover {
   justify-content: center !important;
   padding-top: 0 !important;
   overflow: hidden !important;
+  height: 100px !important;
+  max-height: 100px !important;
+}
+
+.console-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.console-actions .btn-tactical {
+  width: 100%;
+  height: 48px;
+  font-size: 1.4rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 #comms-input::selection {

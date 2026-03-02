@@ -99,9 +99,9 @@ export class DrillController {
         this.ui.visualizer?.addEventListener('mouseup', hideHint);
         this.ui.visualizer?.addEventListener('mouseleave', hideHint);
         this.ui.visualizer?.addEventListener('touchstart', (e) => {
-            e.preventDefault();
+            if (e.cancelable) e.preventDefault();
             showHint();
-        });
+        }, { passive: false });
         this.ui.visualizer?.addEventListener('touchend', hideHint);
 
         // Click to replay + show hint
@@ -257,7 +257,7 @@ export class DrillController {
 
         choices.forEach(char => {
             const btn = document.createElement('button');
-            btn.className = 'btn-rugged-glass';
+            btn.className = 'glass btn-rugged-glass fade-in';
             btn.style.height = '180px';
             btn.style.display = 'flex';
             btn.style.alignItems = 'center';
@@ -271,13 +271,26 @@ export class DrillController {
             span.className = 'distressed-stencil';
 
             btn.appendChild(span);
-            btn.onclick = () => this.handleAnswer(char);
+            // Touch support for faster response + CSS :active state
+            btn.addEventListener('touchstart', (e) => {
+                if (e.cancelable) e.preventDefault();
+                this.handleAnswer(char, btn);
+            }, { passive: false });
+
+            btn.onclick = () => this.handleAnswer(char, btn);
             this.ui.choices.appendChild(btn);
         });
     }
 
-    handleAnswer(selected) {
+    handleAnswer(selected, btn) {
         if (this.isProcessing) return;
+        this.isProcessing = true;
+
+        // Visual "press" feedback
+        if (btn) {
+            btn.classList.add('pressed');
+            setTimeout(() => btn.classList.remove('pressed'), 150);
+        }
 
         const target = this.currentSession[this.currentIndex];
         const isCorrect = selected === target;
