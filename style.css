@@ -189,7 +189,7 @@ body::before {
 .modal-content {
   max-width: 400px;
   width: 100%;
-  padding: 40px 32px;
+  padding: 32px 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -585,18 +585,18 @@ button.secondary:hover {
 /* Modal Polish */
 .modal-px-header {
   font-family: 'Stardos Stencil', serif;
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   color: var(--text-primary);
   opacity: 0.95;
 }
 
 .modal-px-label {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-muted);
   letter-spacing: 1.2px;
@@ -606,7 +606,7 @@ button.secondary:hover {
 
 .modal-px-value {
   font-family: 'Outfit', sans-serif;
-  font-size: 4.5rem;
+  font-size: 3.5rem;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -1px;
@@ -614,7 +614,7 @@ button.secondary:hover {
 
 .modal-body p {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 1.4;
   color: var(--text-secondary);
   font-weight: 400;
