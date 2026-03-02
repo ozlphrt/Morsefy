@@ -63,12 +63,20 @@ class StateManager {
       attempts: 0,
       correct: 0,
       totalTime: 0,
+      recentTimings: [],
       masteryTier: 'None',
       lastSeen: 0
     };
 
+    if (!stats.recentTimings) stats.recentTimings = [];
+
     stats.attempts++;
-    if (isCorrect) stats.correct++;
+    if (isCorrect) {
+      stats.correct++;
+      // Only track timings for correct answers to represent actual skill speed
+      stats.recentTimings.push(responseTime);
+      if (stats.recentTimings.length > 50) stats.recentTimings.shift();
+    }
     stats.totalTime += responseTime;
     stats.lastSeen = Date.now();
 

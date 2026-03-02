@@ -66,8 +66,16 @@ function showStats(char, stats, color) {
 
     attEl.textContent = stats ? stats.attempts : 0;
 
-    const avgSpeed = stats && stats.attempts > 0 ? (stats.totalTime / stats.attempts / 1000).toFixed(2) : '0.00';
-    spdEl.textContent = `${avgSpeed}s`;
+    const calculateMedian = (arr) => {
+        if (!arr || arr.length === 0) return 0;
+        const s = [...arr].sort((a, b) => a - b);
+        const mid = Math.floor(s.length / 2);
+        return s.length % 2 !== 0 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+    };
+
+    const medianMs = stats && stats.recentTimings ? calculateMedian(stats.recentTimings) : 0;
+    const displaySpeed = (medianMs / 1000).toFixed(2);
+    spdEl.textContent = `${displaySpeed}s`;
 
     // Mastery Name based on color/logic
     let masteryName = 'None';

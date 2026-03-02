@@ -8,6 +8,7 @@ export class DrillController {
         this.currentIndex = 0;
         this.startTime = 0;
         this.isProcessing = false;
+        this.sessionTimings = [];
 
         this.ui = {
             choices: document.getElementById('drill-choices'),
@@ -67,6 +68,7 @@ export class DrillController {
     start() {
         this.currentSession = this.training.generateSession(20);
         this.currentIndex = 0;
+        this.sessionTimings = [];
         this.updateStats();
         this.nextQuestion();
     }
@@ -147,8 +149,11 @@ export class DrillController {
         const target = this.currentSession[this.currentIndex];
         const isCorrect = selected === target;
         const responseTime = Date.now() - this.startTime;
-
         this.sm.updateCharStats(target, isCorrect, responseTime);
+
+        if (isCorrect) {
+            this.sessionTimings.push(responseTime);
+        }
 
         const btns = this.ui.choices.querySelectorAll('button');
         btns.forEach(btn => {
@@ -249,38 +254,46 @@ export class DrillController {
             const level = unlockedChars.length - 1;
             const evalProgress = history.length;
 
+            const calculateMedian = (arr) => {
+                if (!arr || arr.length === 0) return 0;
+                const sorted = [...arr].sort((a, b) => a - b);
+                const mid = Math.floor(sorted.length / 2);
+                return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+            };
+            const sessionMedian = (calculateMedian(this.sessionTimings) / 1000).toFixed(2);
+
             const boostHtml = effective.speedBoost > 0 ? `
-              <div style="font-size: 0.8rem; color: var(--accent-primary); margin-top: 2px;">+${effective.speedBoost} WPM BOOST</div>
+              <div style="font-size: 0.8rem; color: var(--accent-primary); margin-top: 2px;">+${effective.speedBoost} WPM BOOST ACTIVE</div>
             ` : '';
 
             body.innerHTML = `
-              <div style="margin-bottom: 24px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                <div class="glass" style="padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
-                    <div class="modal-px-label" style="font-size: 0.75rem;">CURRENT LEVEL</div>
-                    <div class="modal-px-value" style="font-size: 1.8rem; color: var(--text-primary); margin-top: 4px;">LVL ${level}</div>
+              <div style="margin-bottom: 20px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="glass" style="padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <div class="modal-px-label" style="font-size: 0.7rem;">CURRENT LEVEL</div>
+                    <div class="modal-px-value" style="font-size: 1.6rem; color: var(--text-primary); margin-top: 4px;">LVL ${level}</div>
                 </div>
-                <div class="glass" style="padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px;">
-                    <div class="modal-px-label" style="font-size: 0.75rem;">EVALUATION</div>
-                    <div class="modal-px-value" style="font-size: 1.8rem; color: var(--accent-primary); margin-top: 4px;">${evalProgress}/60</div>
+                <div class="glass" style="padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <div class="modal-px-label" style="font-size: 0.7rem;">SESSION SPD</div>
+                    <div class="modal-px-value" style="font-size: 1.6rem; color: var(--accent-primary); margin-top: 4px;">${sessionMedian}s</div>
                 </div>
               </div>
 
-              <div style="margin-bottom: 24px; padding: 20px; background: rgba(255,170,51,0.03); border-radius: 16px; border: 1px solid rgba(255,170,51,0.1);">
+              <div style="margin-bottom: 20px; padding: 16px; background: rgba(255,170,51,0.03); border-radius: 16px; border: 1px solid rgba(255,170,51,0.1);">
                 <div class="modal-px-label">OPERATIONAL ACCURACY</div>
-                <div class="modal-px-value" style="color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'}; margin-top: 4px;">${acc}%</div>
-                <div class="modal-px-label" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; opacity: 0.6; font-weight: 400;">TARGET: 96% TO ADVANCE</div>
+                <div class="modal-px-value" style="font-size: 3rem; color: ${acc >= 96 ? 'var(--accent-success)' : acc < 75 ? 'var(--accent-danger)' : 'var(--accent-warning)'}; margin-top: 4px;">${acc}%</div>
+                <div class="modal-px-label" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; opacity: 0.6; font-weight: 400;">TARGET: 96% TO ADVANCE</div>
                 ${boostHtml}
               </div>
 
-              <div style="display: flex; justify-content: space-around; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+              <div style="display: flex; justify-content: space-around; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 16px;">
                 <div>
-                  <div class="modal-px-label">BONUS XP</div>
-                  <div class="modal-px-value" style="font-size: 1.8rem; color: var(--text-primary); margin-top: 4px;">+50</div>
+                  <div class="modal-px-label" style="font-size: 0.65rem;">EVALUATION</div>
+                  <div class="modal-px-value" style="font-size: 1.5rem; color: var(--text-primary); margin-top: 4px;">${evalProgress}/60</div>
                 </div>
-                <div style="width: 1px; background: rgba(255,255,255,0.1); height: 40px;"></div>
+                <div style="width: 1px; background: rgba(255,255,255,0.1); height: 30px;"></div>
                 <div>
-                  <div class="modal-px-label">STREAK</div>
-                  <div class="modal-px-value" style="font-size: 1.8rem; color: var(--accent-primary); margin-top: 4px;">${this.sm.state.progress.streak}d</div>
+                  <div class="modal-px-label" style="font-size: 0.65rem;">STREAK</div>
+                  <div class="modal-px-value" style="font-size: 1.5rem; color: var(--accent-primary); margin-top: 4px;">${this.sm.state.progress.streak}d</div>
                 </div>
               </div>
             `;
