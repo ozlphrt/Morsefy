@@ -28,14 +28,28 @@ class MorseEngine {
     async init() {
         if (!this.audioCtx) {
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+            this.audioCtx.onstatechange = () => {
+                console.log(`[MorseEngine] AudioContext state: ${this.audioCtx.state}`);
+            };
+
             this.gainNode = this.audioCtx.createGain();
             this.gainNode.gain.value = 0;
             this.gainNode.connect(this.audioCtx.destination);
         }
 
-        if (this.audioCtx.state === 'suspended') {
-            await this.audioCtx.resume();
+        if (this.audioCtx.state === 'suspended' || this.audioCtx.state === 'interrupted') {
+            try {
+                await this.audioCtx.resume();
+                console.log('[MorseEngine] AudioContext resumed successfully');
+            } catch (e) {
+                console.error('[MorseEngine] Failed to resume AudioContext:', e);
+            }
         }
+    }
+
+    async ensureAudioActive() {
+        await this.init();
     }
 
     async playCharacter(char, wpm = 20, farnsworth = null) {

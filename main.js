@@ -151,4 +151,17 @@ const updateSW = registerSW({
     },
 });
 
+// --- Audio Resilience & Lifecycle ---
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        console.log('[App] Visibility returned - waking up audio engine');
+        morseEngine.ensureAudioActive();
+    }
+});
+
+// "Stealth" resume on any valid interaction to recover from background suspension
+document.addEventListener('click', () => {
+    morseEngine.ensureAudioActive();
+}, { once: false });
+
 console.log('Morsefy Initialized');
