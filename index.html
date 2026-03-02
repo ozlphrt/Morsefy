@@ -14,8 +14,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Outfit:wght@400;600;700&family=VT323&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/Morsefy/assets/index-GqACoJI6.js"></script>
-  <link rel="stylesheet" crossorigin href="/Morsefy/assets/index-DAHaTT2n.css">
+  <script type="module" crossorigin src="/Morsefy/assets/index-C8hulGvt.js"></script>
+  <link rel="stylesheet" crossorigin href="/Morsefy/assets/index-DwU1QXq6.css">
 <link rel="manifest" href="/Morsefy/manifest.webmanifest"></head>
 
 <body>
@@ -63,51 +63,97 @@
     </main>
 
     <!-- Screen: Drill -->
-    <main id="screen-drill" class="screen" style="justify-content: flex-end; padding-bottom: 24px; gap: 24px;">
-      <header
-        style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 64px; padding: 0 12px;">
-        <!-- Exit Section -->
-        <div id="btn-exit-drill" class="glass glass-pulse-red"
-          style="display: flex; width: 170px; height: 100%; align-items: center; justify-content: center; cursor: pointer; border-radius: 16px; position: relative;">
-          <div
-            style="font-family: var(--font-main); font-size: 2rem; font-weight: bold; color: var(--accent-danger); text-shadow: 0 0 10px rgba(255,58,58,0.6); line-height: 1; z-index: 10;">
-            EXIT
+    <main id="screen-drill" class="screen" style="gap: 8px;">
+      <!-- ROW 1: Tactical Header Interface -->
+      <header class="tactical-header"
+        style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 12px;">
+        <!-- Power Button -->
+        <div id="btn-exit-drill" class="glass btn-rugged-glass btn-power"
+          style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+          <div class="socket-recess">
+            <div class="btn-red-plastic"></div>
           </div>
         </div>
 
         <!-- Stats Section -->
         <div class="glass"
-          style="display: flex; gap: 20px; padding: 0 20px; width: 170px; height: 100%; align-items: center; justify-content: center; border-radius: 16px; position: relative;">
+          style="display: flex; gap: 16px; padding: 0 16px; flex: 1; height: 60px; align-items: center; justify-content: center; border-radius: 12px; position: relative;">
           <div id="drill-progress"
-            style="font-size: 2rem; font-weight: bold; font-family: var(--font-main); color: var(--accent-primary); text-shadow: 0 0 10px rgba(255,170,51,0.6);">
+            style="font-size: 1.8rem; font-weight: bold; font-family: var(--font-main); color: var(--accent-primary); text-shadow: 0 0 10px rgba(255,170,51,0.6);">
             1/20
           </div>
-          <div style="width: 2px; height: 24px; background: rgba(255,255,255,0.1);"></div>
+          <div style="width: 1px; height: 20px; background: rgba(255,255,255,0.1);"></div>
           <div id="drill-accuracy"
-            style="font-size: 2rem; font-weight: bold; font-family: var(--font-main); color: var(--text-primary); text-shadow: 0 0 10px rgba(255,255,255,0.2);">
-            100%</div>
+            style="font-size: 1.8rem; font-weight: bold; font-family: var(--font-main); color: var(--text-primary); text-shadow: 0 0 10px rgba(255,255,255,0.2);">
+            100%
+          </div>
+        </div>
+
+        <!-- Shrunken TX Lamp -->
+        <div class="glass btn-rugged-glass"
+          style="position: relative; width: 60px; height: 60px; border-radius: 12px !important; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <div
+            style="width: 40px; height: 40px; border-radius: 50%; background: #1a1c17; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 3px 5px rgba(0,0,0,0.9);">
+            <div id="audio-visualizer" class="tx-lamp" style="width: 32px; height: 32px; border-radius: 50%;"></div>
+          </div>
+          <div id="drill-hint"
+            style="position: absolute; top: 70px; left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 3rem; font-weight: 800; color: #ffffff; text-shadow: 0 0 15px var(--accent-primary); opacity: 0; pointer-events: none; transition: all 0.2s;">
+            ...
+          </div>
         </div>
       </header>
 
-      <div style="position: relative; align-self: center;">
-        <!-- Retro TX Lamp -->
-        <div class="glass btn-rugged-glass"
-          style="position: relative; width: 160px; height: 160px; border-radius: 16px !important; display: flex; align-items: center; justify-content: center;">
-          <!-- Outer Metal Ring inner shadow -->
-          <div
-            style="width: 110px; height: 110px; border-radius: 50%; background: #1a1c17; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 6px 10px rgba(0,0,0,0.9), 0 2px 4px rgba(255,255,255,0.1);">
-            <div id="audio-visualizer" class="tx-lamp" style="width: 90px; height: 90px; border-radius: 50%;">
+      <!-- ROW 2: Comms Console -->
+      <section class="glass comms-console"
+        style="width: 100%; padding: 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: -4px;">
+          <div class="modal-px-label" style="font-size: 0.7rem; color: var(--accent-primary);">SIGNAL PROCESSOR M01
+          </div>
+          <div id="rx-status-indicator"
+            style="width: 8px; height: 8px; border-radius: 50%; background: #222; border: 1px solid #000;"></div>
+        </div>
+
+        <!-- NEW: Signal Level Meter & Tone Indicator -->
+        <div id="rx-level-container"
+          style="width: 100%; display: none; flex-direction: column; gap: 4px; margin-top: -4px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div id="rx-level-bar-bg"
+              style="flex-grow: 1; height: 6px; background: rgba(0,0,0,0.4); border-radius: 3px; overflow: hidden;">
+              <div id="rx-level-bar"
+                style="width: 0%; height: 100%; background: var(--accent-primary); box-shadow: 0 0 5px var(--accent-primary); transition: width 0.05s linear;">
+              </div>
+            </div>
+            <div id="rx-tone-dot"
+              style="width: 10px; height: 10px; border-radius: 50%; background: #222; border: 1px solid #000; transition: all 0.05s ease;">
             </div>
           </div>
+          <div id="rx-debug-info"
+            style="font-family: monospace; font-size: 0.6rem; color: #555; display: flex; justify-content: space-between; text-transform: uppercase;">
+            <div style="display: flex; gap: 8px;">
+              <span>FREQ: <span id="rx-debug-freq">--</span>HZ</span>
+              <span>THR: <span id="rx-debug-thr">--</span></span>
+            </div>
+            <span>BUF: <span id="rx-debug-buffer"
+                style="color: var(--accent-primary); letter-spacing: 2px;">--</span></span>
+          </div>
         </div>
-        <div id="drill-hint"
-          style="position: absolute; top: -110px; left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: 4rem; letter-spacing: 0.5em; font-weight: 800; color: #ffffff; text-shadow: 0 0 30px var(--accent-primary), 0 0 10px #ffffff; opacity: 0; pointer-events: none; transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);">
-          ...
+        <div class="comms-display-container">
+          <textarea id="comms-input" placeholder="READY TO TRANSMIT..." spellcheck="false" autocomplete="off"
+            rows="3"></textarea>
         </div>
-      </div>
+        <div style="display: flex; gap: 12px; width: 100%;">
+          <button id="btn-comms-tx" class="btn-tactical"
+            style="flex: 1; height: 44px; font-size: 1.4rem; padding: 0;">TRANSMIT [TX]</button>
+          <button id="btn-comms-rx" class="btn-tactical btn-disabled"
+            style="flex: 1; height: 44px; font-size: 1.4rem; padding: 0;">LISTEN [RX]</button>
+        </div>
+      </section>
 
-      <div id="drill-choices" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
-        <!-- Choices will be injected here -->
+      <!-- ROW 3: Choices (Frees space below) -->
+      <div style="display: flex; align-items: flex-end; padding-top: 16px; padding-bottom: 24px;">
+        <div id="drill-choices" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+          <!-- Choices will be injected here -->
+        </div>
       </div>
     </main>
 
@@ -240,6 +286,20 @@
 
         <button id="modal-btn-stats-close" class="btn-tactical"
           style="width: 100%; height: 56px; font-size: 1.4rem;">CLOSE</button>
+      </div>
+    </div>
+
+    <!-- Modal: Coming Soon -->
+    <div id="modal-coming-soon" class="modal-overlay">
+      <div class="modal-content glass fade-in">
+        <div style="font-size: 3.5rem; margin-bottom: 20px;">📡</div>
+        <h2 class="modal-px-header">SIGNAL OFFLINE</h2>
+        <div class="modal-body" style="margin-bottom: 24px;">
+          <p>Real-time [RX] decoding is currently in calibration. This tactical module will be deployed in a future
+            update.</p>
+        </div>
+        <button id="modal-btn-coming-soon-close" class="btn-tactical"
+          style="width: 100%; height: 56px; font-size: 1.5rem;">ACKNOWLEDGE</button>
       </div>
     </div>
 

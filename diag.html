@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Decoder — Diagnostic</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0d1117;
+            --panel: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --dim: #8b949e;
+            --green: #39d353;
+            --orange: #e3b341;
+            --blue: #58a6ff;
+            --red: #f85149;
+            --radius: 8px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--blue);
+            font-size: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 16px;
+            max-width: 1100px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .panel h2 {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            padding: 8px 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: #21262d;
+            color: var(--text);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        button:hover:not(:disabled) {
+            background: #30363d;
+            border-color: var(--blue);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        button.primary {
+            background: #1f6feb;
+            border-color: #1f6feb;
+            color: #fff;
+        }
+
+        button.primary:hover:not(:disabled) {
+            background: #388bfd;
+        }
+
+        button.danger {
+            background: #6e1f1f;
+            border-color: var(--red);
+        }
+
+        button.test {
+            background: #1c3a1f;
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        #status {
+            color: var(--orange);
+            font-size: 12px;
+            margin-bottom: 16px;
+            min-height: 18px;
+        }
+
+        #decoded {
+            width: 100%;
+            min-height: 160px;
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--green);
+            font-size: 22px;
+            letter-spacing: 3px;
+            padding: 12px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .char-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--dim);
+        }
+
+        #char-buf {
+            color: var(--orange);
+            font-size: 18px;
+            letter-spacing: 4px;
+            min-width: 80px;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 10px;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-value {
+            font-size: 15px;
+            color: var(--text);
+            margin-top: 2px;
+            font-weight: bold;
+        }
+
+        .mv-green {
+            color: var(--green);
+        }
+
+        .mv-orange {
+            color: var(--orange);
+        }
+
+        .mv-blue {
+            color: var(--blue);
+        }
+
+        .sidebar>*+* {
+            margin-top: 14px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .field label {
+            font-size: 11px;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        select,
+        input[type="range"] {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text);
+            padding: 6px 8px;
+            font-family: inherit;
+            font-size: 13px;
+            width: 100%;
+        }
+
+        input[type="range"] {
+            padding: 2px;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider-row span {
+            min-width: 32px;
+            text-align: right;
+            color: var(--orange);
+        }
+
+        .test-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>⚡ Morse Decoder — Diagnostic Tool</h1>
+    <div class="layout">
+        <div>
+            <div class="controls">
+                <button id="btn-start" class="primary">▶ Start RX</button>
+                <button id="btn-stop" class="danger">■ Stop</button>
+                <button id="btn-reset">↺ Reset</button>
+            </div>
+            <div id="status">Ready. Press Start RX to begin.</div>
+            <div class="panel" style="margin-bottom:12px">
+                <h2>Decoded Text</h2>
+                <textarea id="decoded" readonly></textarea>
+                <div class="char-row">
+                    <span>Buffer:</span><span id="char-buf">—</span>
+                    <span id="val-silence" style="margin-left:auto;font-size:11px;color:var(--dim)"></span>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>Live Diagnostics</h2>
+                <div class="metrics">
+                    <div class="metric"><span class="metric-label">Tracked Freq (f0)</span><span
+                            class="metric-value mv-blue" id="val-f0">—</span></div>
+                    <div class="metric"><span class="metric-label">Gate State</span> <span class="metric-value"
+                            id="val-gate">⚫ OFF</span></div>
+                    <div class="metric"><span class="metric-label">Toneness</span> <span class="metric-value mv-orange"
+                            id="val-toneness">—</span></div>
+                    <div class="metric"><span class="metric-label">Dot Estimate</span> <span
+                            class="metric-value mv-green" id="val-dot">—</span></div>
+                    <div class="metric"><span class="metric-label">Envelope</span> <span class="metric-value"
+                            id="val-env">—</span></div>
+                    <div class="metric"><span class="metric-label">Noise Floor</span> <span class="metric-value"
+                            id="val-noise">—</span></div>
+                    <div class="metric"><span class="metric-label">Threshold</span> <span class="metric-value"
+                            id="val-thr">—</span></div>
+                    <div class="metric"><span class="metric-label">Pulse Count</span> <span class="metric-value"
+                            id="val-pulses">0 / 10 (calibrating…)</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="panel">
+                <h2>Settings</h2>
+                <div class="field">
+                    <label>Tone Band</label>
+                    <select id="band-select">
+                        <option value="300-600">300 – 600 Hz</option>
+                        <option value="300-1200" selected>300 – 1200 Hz (auto)</option>
+                        <option value="600-900">600 – 900 Hz</option>
+                        <option value="900-1200">900 – 1200 Hz</option>
+                    </select>
+                </div>
+                <div class="field" style="margin-top:12px">
+                    <label>Sensitivity (K · noise = threshold)</label>
+                    <div class="slider-row">
+                        <input type="range" id="sensit-slider" min="2.0" max="6.0" step="0.1" value="3.0">
+                        <span id="k-label">3.0</span>
+                    </div>
+                    <small style="color:var(--dim);font-size:10px">Lower = more sensitive. Raise to reject
+                        noise.</small>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>Synthetic Test</h2>
+                <p style="font-size:11px;color:var(--dim);margin-bottom:10px">No microphone required.</p>
+                <div class="test-row">
+                    <button id="btn-test" class="test">▶ Test: CQ CQ TEST (12WPM, 600→750Hz)</button>
+                    <button id="btn-noise">🔊 Noise Only (expect no decode)</button>
+                </div>
+            </div>
+            <div class="panel">
+                <h2>Guide</h2>
+                <small style="color:var(--dim);line-height:1.8;display:block">
+                    <b style="color:var(--text)">f0:</b> FFT-tracked tone frequency.<br>
+                    <b style="color:var(--text)">Toneness:</b> &gt;1.3 = narrowband tone detected.<br>
+                    <b style="color:var(--text)">Gate:</b> 🟢 ON = you are transmitting.<br>
+                    <b style="color:var(--text)">Dot Est:</b> Calibrated after 10 pulses.<br>
+                    <b style="color:var(--text)">Buffer:</b> Dots/dashes for current char.<br>
+                    <b style="color:var(--text)">K slider:</b> Raise if noise triggers gate.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // INTERNATIONAL MORSE MAP
+        // ═══════════════════════════════════════════════════════════════════════════
+        const MORSE_MAP = {
+            '.-': 'A', '-...': 'B', '-.-.': 'C', '-..': 'D', '.': 'E',
+            '..-.': 'F', '--.': 'G', '....': 'H', '..': 'I', '.---': 'J',
+            '-.-': 'K', '.-..': 'L', '--': 'M', '-.': 'N', '---': 'O',
+            '.--.': 'P', '--.-': 'Q', '.-.': 'R', '...': 'S', '-': 'T',
+            '..-': 'U', '...-': 'V', '.--': 'W', '-..-': 'X', '-.--': 'Y',
+            '--..': 'Z', '.----': '1', '..---': '2', '...--': '3', '....-': '4',
+            '.....': '5', '-....': '6', '--...': '7', '---..': '8', '----.': '9',
+            '-----': '0', '.-.-.-': '.', '--..--': ',', '..--..': '?', '-..-.': '/',
+        };
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SYNTHETIC TEST SOURCE
+        // ═══════════════════════════════════════════════════════════════════════════
+        const CHAR_MORSE = { C: '-.-.', Q: '--.-', T: '-', E: '.', S: '...' };
+        const MESSAGE = ['C', 'Q', ' ', 'C', 'Q', ' ', 'T', 'E', 'S', 'T'];
+
+        class MorseTestSource {
+            constructor(ctx, noiseOnly) {
+                this.ctx = ctx; this.noiseOnly = noiseOnly;
+                this.masterGain = ctx.createGain(); this.masterGain.gain.value = 1;
+            }
+            connect(dest) { this.masterGain.connect(dest); }
+            start() {
+                const ctx = this.ctx, sr = ctx.sampleRate;
+                const nBuf = ctx.createBuffer(1, 30 * sr, sr);
+                const nd = nBuf.getChannelData(0);
+                for (let i = 0; i < nd.length; i++) nd[i] = (Math.random() * 2 - 1) * (this.noiseOnly ? 0.15 : 0.03);
+                this.noiseNode = ctx.createBufferSource();
+                this.noiseNode.buffer = nBuf; this.noiseNode.loop = true;
+                this.noiseNode.connect(this.masterGain); this.noiseNode.start();
+                if (this.noiseOnly) return;
+
+                this.osc = ctx.createOscillator(); this.gain = ctx.createGain();
+                this.osc.type = 'sine'; this.osc.frequency.value = 600;
+                const t0 = ctx.currentTime + 0.5;
+                this.osc.frequency.setValueAtTime(600, t0);
+                this.osc.frequency.linearRampToValueAtTime(750, t0 + 20);
+                this.gain.gain.value = 0; this.osc.connect(this.gain); this.gain.connect(this.masterGain);
+                this.osc.start();
+
+                const wpm = 12, dot = 60 / (wpm * 50), dash = dot * 3, eg = dot, cg = dot * 3, wg = dot * 7;
+                const att = 0.005, rel = 0.005;
+                const on = (t) => { this.gain.gain.setValueAtTime(0, t); this.gain.gain.linearRampToValueAtTime(0.7, t + att); };
+                const off = (t) => { this.gain.gain.setValueAtTime(0.7, t); this.gain.gain.linearRampToValueAtTime(0, t + rel); };
+                let t = t0;
+                for (const ch of MESSAGE) {
+                    if (ch === ' ') { t += wg; continue; }
+                    const seq = CHAR_MORSE[ch];
+                    for (let i = 0; i < seq.length; i++) {
+                        const dur = seq[i] === '.' ? dot : dash;
+                        on(t); off(t + dur); t += dur + eg;
+                    }
+                    t += cg - eg;
+                }
+            }
+            stop() {
+                if (this.noiseNode) { try { this.noiseNode.stop(); } catch (e) { } this.noiseNode = null; }
+                if (this.osc) { try { this.osc.stop(); } catch (e) { } this.osc = null; }
+                this.masterGain.disconnect();
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // MAIN DECODER STATE
+        // ═══════════════════════════════════════════════════════════════════════════
+        let audioCtx = null;
+        let workletNode = null;
+        let micSource = null;
+        let testSource = null;
+        let running = false;
+
+        let tOn = null, tOff = null, silenceStartMs = null, rafId = null;
+        const onDurations = [];
+        let dotMs = 80, pulseCount = 0;
+        const MAX_ROLL = 40, MIN_CALIBRATE = 10;
+        let charBuf = '';
+
+        function arrMedian(arr) {
+            if (!arr.length) return dotMs;
+            const s = [...arr].sort((a, b) => a - b), m = s.length >> 1;
+            return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+        }
+        function updateDot(durMs) {
+            onDurations.push(durMs);
+            if (onDurations.length > MAX_ROLL) onDurations.shift();
+            const shorts = onDurations.filter(d => d < dotMs * 2);
+            if (shorts.length) dotMs = Math.max(30, Math.min(250, arrMedian(shorts)));
+        }
+
+        const classifyOn = (d) => d < dotMs * 2 ? '.' : '-';
+        const classifySil = (d) => d < dotMs * 2 ? 'element' : d < dotMs * 5 ? 'letter' : 'word';
+
+        function flushChar() {
+            if (!charBuf) return;
+            const ch = MORSE_MAP[charBuf] ?? `[${charBuf}]`;
+            ui.decoded.textContent += ch; ui.decoded.scrollTop = ui.decoded.scrollHeight;
+            ui.charBuf.textContent = ''; charBuf = '';
+        }
+
+        function onMsg(ev) {
+            const d = ev.data, sr = audioCtx.sampleRate;
+            if (d.type === 'transition') {
+                if (d.state === 'on') {
+                    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                    if (tOff !== null && silenceStartMs !== null && pulseCount >= MIN_CALIBRATE) {
+                        const sil = performance.now() - silenceStartMs;
+                        const gt = classifySil(sil);
+                        if (gt === 'letter') flushChar();
+                        else if (gt === 'word') { flushChar(); ui.decoded.textContent += ' '; }
+                    }
+                    tOn = d.tSamples; tOff = null; silenceStartMs = null;
+                } else if (d.state === 'off') {
+                    if (tOn !== null) {
+                        const durMs = (d.tSamples - tOn) / sr * 1000;
+                        tOn = null; tOff = d.tSamples; silenceStartMs = performance.now();
+                        pulseCount++; updateDot(durMs);
+                        if (pulseCount >= MIN_CALIBRATE) { charBuf += classifyOn(durMs); ui.charBuf.textContent = charBuf; }
+                    }
+                    startSilenceLoop();
+                }
+            } else if (d.type === 'status') {
+                ui.f0.textContent = `${d.f0} Hz`; ui.env.textContent = d.env.toExponential(2);
+                ui.noise.textContent = d.noise.toExponential(2); ui.thr.textContent = d.thr.toExponential(2);
+                ui.toneness.textContent = d.toneness.toFixed(2); ui.gate.textContent = d.gateOn ? '🟢 ON' : '⚫ OFF';
+                ui.dot.textContent = `${Math.round(dotMs)} ms`;
+                ui.pulses.textContent = pulseCount >= MIN_CALIBRATE ? `${pulseCount} (calibrated)` : `${pulseCount} / ${MIN_CALIBRATE} (calibrating…)`;
+            }
+        }
+
+        function startSilenceLoop() {
+            if (rafId) cancelAnimationFrame(rafId);
+            const tick = () => {
+                if (!running || silenceStartMs === null) return;
+                const sil = performance.now() - silenceStartMs;
+                const gt = classifySil(sil); ui.silence.textContent = `${Math.round(sil)}ms (${gt})`;
+                if (gt !== 'element' && pulseCount >= MIN_CALIBRATE) {
+                    flushChar(); if (gt === 'word') ui.decoded.textContent += ' ';
+                    silenceStartMs = null; return;
+                }
+                rafId = requestAnimationFrame(tick);
+            };
+            rafId = requestAnimationFrame(tick);
+        }
+
+        function wireWorklet(source) {
+            source.connect(workletNode);
+            const ka = audioCtx.createGain(); ka.gain.value = 0;
+            workletNode.connect(ka); ka.connect(audioCtx.destination);
+        }
+
+        function applyParams() {
+            if (!workletNode) return;
+            const band = ui.band.value.split('-').map(Number);
+            const K = parseFloat(ui.sensit.value);
+            workletNode.port.postMessage({ type: 'setParams', K, fMin: band[0], fMax: band[1] });
+            ui.kLabel.textContent = K.toFixed(1);
+        }
+
+        async function startAudio() {
+            if (running) return;
+            audioCtx = new AudioContext();
+            // Resolve worklet path relative to public root
+            await audioCtx.audioWorklet.addModule('/Morsefy/decoder/morse-worklet.js');
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+            });
+            micSource = audioCtx.createMediaStreamSource(stream);
+            workletNode = new AudioWorkletNode(audioCtx, 'tone-gate-processor');
+            workletNode.port.onmessage = onMsg; applyParams(); wireWorklet(micSource);
+            running = true; ui.status.textContent = 'Listening…';
+            ui.btnStart.disabled = true; ui.btnStop.disabled = false;
+        }
+
+        async function startTest(noiseOnly) {
+            if (audioCtx) stopAudio();
+            audioCtx = new AudioContext();
+            await audioCtx.audioWorklet.addModule('/Morsefy/decoder/morse-worklet.js');
+            workletNode = new AudioWorkletNode(audioCtx, 'tone-gate-processor');
+            workletNode.port.onmessage = onMsg; applyParams();
+            testSource = new MorseTestSource(audioCtx, noiseOnly);
+            testSource.connect(workletNode);
+            const ka = audioCtx.createGain(); ka.gain.value = 0;
+            workletNode.connect(ka); ka.connect(audioCtx.destination);
+            testSource.masterGain.connect(ka); testSource.start();
+            running = true; ui.status.textContent = noiseOnly ? 'Test: noise only' : 'Test: CQ CQ TEST';
+            ui.btnStart.disabled = true; ui.btnStop.disabled = false;
+        }
+
+        function stopAudio() {
+            running = false; if (rafId) cancelAnimationFrame(rafId);
+            if (testSource) testSource.stop(); if (workletNode) workletNode.disconnect();
+            if (micSource) micSource.disconnect(); if (audioCtx) audioCtx.close();
+            ui.status.textContent = 'Stopped.'; ui.btnStart.disabled = false; ui.btnStop.disabled = true;
+        }
+
+        const ui = {};
+        window.addEventListener('DOMContentLoaded', () => {
+            ui.btnStart = document.getElementById('btn-start'); ui.btnStop = document.getElementById('btn-stop');
+            ui.band = document.getElementById('band-select'); ui.sensit = document.getElementById('sensit-slider');
+            ui.kLabel = document.getElementById('k-label'); ui.status = document.getElementById('status');
+            ui.f0 = document.getElementById('val-f0'); ui.env = document.getElementById('val-env');
+            ui.noise = document.getElementById('val-noise'); ui.thr = document.getElementById('val-thr');
+            ui.toneness = document.getElementById('val-toneness'); ui.gate = document.getElementById('val-gate');
+            ui.dot = document.getElementById('val-dot'); ui.pulses = document.getElementById('val-pulses');
+            ui.silence = document.getElementById('val-silence'); ui.charBuf = document.getElementById('char-buf');
+            ui.decoded = document.getElementById('decoded');
+            ui.btnStart.addEventListener('click', startAudio);
+            ui.btnStop.addEventListener('click', stopAudio);
+            document.getElementById('btn-reset').addEventListener('click', () => {
+                onDurations.length = 0; dotMs = 80; pulseCount = 0; charBuf = '';
+                ui.decoded.textContent = ''; ui.charBuf.textContent = ''; ui.silence.textContent = '';
+            });
+            document.getElementById('btn-test').addEventListener('click', () => startTest(false));
+            document.getElementById('btn-noise').addEventListener('click', () => startTest(true));
+            ui.sensit.addEventListener('input', () => applyParams());
+            ui.band.addEventListener('change', applyParams);
+            ui.btnStop.disabled = true;
+        });
+    </script>
+</body>
+
+</html>
