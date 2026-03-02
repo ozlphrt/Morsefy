@@ -148,7 +148,10 @@ class TrainingEngine {
         const level = this.sm.state.progress.unlockedChars.length - 1;
         const effectiveWpm = settings.wpm + Math.floor(level / 5);
         const isBlindOps = level >= 15;
-        const lightFlashOn = isBlindOps ? false : settings.lightFlashOn;
+
+        // Respect manual user override: if user explicitly turned it ON, keep it on.
+        // If they left it on default, at level 15+ it becomes "Blind Ops" (off)
+        const lightFlashOn = settings.lightFlashOn;
 
         return {
             ...settings,
