@@ -1,13 +1,13 @@
 /**
  * MorseDecoder.js — Main thread decoder.
- * Receives ON/OFF events from AudioWorklet, classifies pulses using
- * live dot-length estimation (median of 8 short pulses), and decodes Morse.
+ * Receives 100Hz feature stream (feat) from AudioWorklet, reconstructs
+ * mark/gap durations from gate transitions, estimates unit time T via
+ * quantization fit using both marks and gaps, and decodes Morse.
  */
 export class MorseDecoder {
     constructor(audioCtx) {
         this.audioCtx = audioCtx;
-        this.sampleRate = 44100; // Default; overwritten to audioCtx.sampleRate in start()
-
+        this.sampleRate = 44100;
         this.microphone = null;
         this.workletNode = null;
         this.isListening = false;
@@ -17,22 +17,27 @@ export class MorseDecoder {
         this.onStatusChange = null;
         this.onLevelUpdate = null;
 
-        // State
-        this._tOn = null;             // sample count when last ON fired
-        this._silenceStart = null;    // ms timestamp when last OFF fired
-        this._silenceMs = 0;
+        // --- Decoder state (feat-driven) ---
+        this._lastFeat = null;
+        this._lastGate = false;
+        this._lastGateTSamples = null; // sample timestamp of last gate transition
+        this._inMark = false;          // true if currently in mark (tone)
         this._buffer = '';
-        this._charFired = false;
-        this._wordFired = false;
 
-        // Dot estimator: median of sliding window of short pulses
-        this._shortPulses = [];        // window of the last 8 short durations
-        this.dotMean = 200;            // Conservative seed (500ms charGapMs initially)
+        // Rolling duration window for unit-time (T) fitting
+        this._durWin = [];             // ms durations, both marks & gaps
+        this._durWinMax = 160;         // 100-200 requested
 
-        // Last status values for UI
-        this._lastLevel = 0;
-        this._lastIsTone = false;
-        this._lastNoise = { floor: 0, snr: 0, f0: 0, thr_on: 0 };
+        // Unit-time estimate (ms)
+        this.T = 120;                  // initial guess
+        this._TValid = false;
+
+        // Filtering / tolerances
+        this._minDurMs = 18;           // ignore ultra-short glitches
+        this._maxDurMs = 2500;         // ignore absurd outliers (helps fit)
+
+        // UI cache
+        this._uiLastSentMs = 0;
 
         this.MORSE_MAP = {
             '.-': 'A', '-...': 'B', '-.-.': 'C', '-..': 'D', '.': 'E',
@@ -45,25 +50,14 @@ export class MorseDecoder {
             '-----': '0', '.-.-.-': '.', '--..--': ',', '..--..': '?',
             '-....-': '-', '-..-.': '/', '-.-.--': '!'
         };
-
-        this._rafId = null;
     }
 
-    // ─── Derived thresholds (ratio-based, with hard minimums) ─────────────────
-
-    get _dashThresholdMs() { return this.dotMean * 2.0; }
-    // Hard floor of 500ms prevents premature decode before dotMean has calibrated
-    get _charGapMs() { return Math.max(500, this.dotMean * 2.5); }
-    get _wordGapMs() { return Math.max(1200, this.dotMean * 6.0); }
-
-    // ─── Public API ──────────────────────────────────────────────────────────
-
+    // --- Public API ---
     async start() {
         if (!this.audioCtx) return;
-        // Update sample rate now that AudioContext is guaranteed to be initialized
         this.sampleRate = this.audioCtx.sampleRate;
+
         try {
-            // Load the worklet module (public/ dir → served at /morse-detector.worklet.js)
             await this.audioCtx.audioWorklet.addModule('/Morsefy/morse-detector.worklet.js');
 
             const stream = await navigator.mediaDevices.getUserMedia({
@@ -72,24 +66,21 @@ export class MorseDecoder {
 
             this.microphone = this.audioCtx.createMediaStreamSource(stream);
             this.workletNode = new AudioWorkletNode(this.audioCtx, 'morse-detector');
-
-            // Route messages from worklet
             this.workletNode.port.onmessage = (e) => this._onWorkletMessage(e.data);
-
             this.microphone.connect(this.workletNode);
-            // Do NOT connect worklet to destination (we don't want to hear the mic)
 
-            // Reset decoder state
-            this._tOn = null;
-            this._silenceStart = null;
+            // Reset state
+            this._lastFeat = null;
+            this._lastGate = false;
+            this._lastGateTSamples = null;
+            this._inMark = false;
             this._buffer = '';
-            this._shortPulses = [];
-            this.dotMean = 120;
-            this._charFired = false;
-            this._wordFired = false;
+
+            this._durWin = [];
+            this.T = 120;
+            this._TValid = false;
 
             this.isListening = true;
-            this._startSilenceLoop();
             if (this.onStatusChange) this.onStatusChange(true);
         } catch (e) {
             console.error('[MorseDecoder] start failed:', e);
@@ -99,125 +90,221 @@ export class MorseDecoder {
 
     stop() {
         this.isListening = false;
-        if (this._rafId) { cancelAnimationFrame(this._rafId); this._rafId = null; }
+
         ['workletNode', 'microphone'].forEach(k => {
             if (this[k]) { this[k].disconnect(); this[k] = null; }
         });
+
         if (this.onStatusChange) this.onStatusChange(false);
-        if (this.onLevelUpdate) this.onLevelUpdate({ level: 0, isTone: false, peakFreq: 0, threshold: '0', buffer: '' });
+        if (this.onLevelUpdate) this.onLevelUpdate({ level: 0, isTone: false, peakFreq: 0, threshold: '', buffer: '' });
     }
 
-    // ─── Worklet message handler ──────────────────────────────────────────────
-
+    // --- Worklet message handling ---
     _onWorkletMessage(data) {
-        if (data.type === 'on') {
-            this._tOn = data.tSamples;
-            this._silenceStart = null;
-            this._charFired = false;
-            this._wordFired = false;
-            this._lastIsTone = true;
-            this._lastLevel = data.level;
+        if (!this.isListening) return;
 
-        } else if (data.type === 'off') {
-            if (this._tOn !== null) {
-                const durationMs = (data.tSamples - this._tOn) / this.sampleRate * 1000;
-                this._tOn = null;
-                this._onTonePulse(durationMs);
-            }
-            this._silenceStart = performance.now();
-            this._lastIsTone = false;
-            this._lastLevel = data.level;
-
-        } else if (data.type === 'noise') {
-            this._lastNoise = data;
+        if (data.type === 'feat') {
+            this._handleFeat(data);
         }
+        // on/off edges are also emitted by the worklet but feat is primary
     }
 
-    // ─── Tone pulse processing ────────────────────────────────────────────────
+    _handleFeat(feat) {
+        this._lastFeat = feat;
 
-    _onTonePulse(durationMs) {
-        // Reject sub-20ms blips (below any meaningful Morse element)
-        if (durationMs < 20) return;
+        const gate = !!feat.gate;
+        const tS = feat.tSamples;
 
-        // Update dot estimator with this pulse if it looks like a dot
-        this._updateDotEstimate(durationMs);
-
-        // Classify pulse
-        const symbol = (durationMs < this._dashThresholdMs) ? '.' : '-';
-        this._buffer += symbol;
-    }
-
-    /**
-     * Dot-length estimator using median of sliding window.
-     * Window tracks the 8 most recent SHORT pulses (dots).
-     * Median is robust to outlier dashes accidentally entering the window.
-     */
-    _updateDotEstimate(durationMs) {
-        // Only add if below current dot/dash crossover (looks like a dot)
-        if (this._shortPulses.length === 0 || durationMs < this._dashThresholdMs) {
-            this._shortPulses.push(durationMs);
-            if (this._shortPulses.length > 8) this._shortPulses.shift(); // sliding window
-            this.dotMean = this._median(this._shortPulses);
-            this.dotMean = Math.max(20, Math.min(600, this.dotMean));
-            // Calibrated once we have seen at least 3 short pulses
-            if (this._shortPulses.length >= 3) this._calibrated = true;
+        // First sample: initialize
+        if (this._lastGateTSamples === null) {
+            this._lastGate = gate;
+            this._lastGateTSamples = tS;
+            this._inMark = gate;
+            this._sendLevelUpdate();
+            return;
         }
-    }
 
-    _median(arr) {
-        if (arr.length === 0) return this.dotMean;
-        const sorted = [...arr].sort((a, b) => a - b);
-        const mid = Math.floor(sorted.length / 2);
-        return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-    }
+        // Detect gate transition
+        if (gate !== this._lastGate) {
+            const durMs = this._samplesToMs(tS - this._lastGateTSamples);
+            const wasMark = this._lastGate; // previous state defines the completed segment
 
-    // ─── Silence gap detection (runs in requestAnimationFrame) ────────────────
+            this._lastGate = gate;
+            this._lastGateTSamples = tS;
+            this._inMark = gate;
 
-    _startSilenceLoop() {
-        const tick = () => {
-            if (!this.isListening) return;
-            this._rafId = requestAnimationFrame(tick);
+            // Debounce / sanity bounds
+            if (durMs >= this._minDurMs && durMs <= this._maxDurMs) {
+                this._pushDuration(durMs);
+                this._refitUnitTime();
 
-            // Update UI meter
-            if (this.onLevelUpdate) {
-                const n = this._lastNoise;
-                const dotMs = Math.round(this.dotMean);
-                const dashMs = Math.round(this.dotMean * 3);
-                this.onLevelUpdate({
-                    level: Math.min(100, (this._lastLevel / (n.thr_on || 0.01)) * 40),
-                    isTone: this._lastIsTone,
-                    peakFreq: n.f0 || 0,
-                    threshold: `·${dotMs} -${dashMs}ms`,
-                    buffer: this._buffer
-                });
-            }
-
-            // Silence-based gap detection — only decode once calibrated
-            if (!this._lastIsTone && this._silenceStart !== null && this._buffer !== '') {
-                const silenceMs = performance.now() - this._silenceStart;
-
-                // Gate: don't decode until dotMean is reliable (3+ short pulses seen)
-                // OR until a very long absolute silence has elapsed (failsafe)
-                const canDecode = this._calibrated || silenceMs > 1500;
-
-                if (canDecode && silenceMs >= this._charGapMs && !this._charFired) {
-                    this._decodeChar();
-                    this._charFired = true;
-                }
-                if (canDecode && silenceMs >= this._wordGapMs && !this._wordFired) {
-                    if (this.onCharDecoded) this.onCharDecoded(' ');
-                    this._wordFired = true;
+                if (wasMark) {
+                    // completed MARK -> classify dot/dash, append symbol
+                    const sym = this._classifyMark(durMs);
+                    if (sym) this._buffer += sym;
+                } else {
+                    // completed GAP -> commit char/word based on 3T / 7T
+                    this._handleGapCommit(durMs);
                 }
             }
-        };
-        this._rafId = requestAnimationFrame(tick);
+        }
+
+        this._sendLevelUpdate();
+    }
+
+    // --- Duration window & Unit-Time Quantization Fit ---
+    _pushDuration(ms) {
+        this._durWin.push(ms);
+        if (this._durWin.length > this._durWinMax) this._durWin.shift();
+    }
+
+    _refitUnitTime() {
+        // Needs enough data points to be stable
+        if (this._durWin.length < 12) {
+            this._TValid = false;
+            return;
+        }
+
+        // Robust fit: scan candidate T and minimize quantization error
+        // using expected unit set {1,3,7} (works with both marks and gaps)
+        const units = [1, 3, 7];
+        const data = this._durWin;
+        const curT = this.T || 120;
+        const Tmin = Math.max(20, curT * 0.6);
+        const Tmax = Math.min(600, curT * 1.6);
+
+        const step = Math.max(1, Math.round((Tmax - Tmin) / 140));
+
+        let bestT = curT;
+        let bestCost = Infinity;
+
+        for (let T = Tmin; T <= Tmax; T += step) {
+            let cost = 0;
+            let used = 0;
+
+            for (let i = 0; i < data.length; i++) {
+                const d = data[i];
+
+                // Find nearest expected unit multiple
+                let bestU = 1;
+                let bestErr = Infinity;
+                for (let k = 0; k < units.length; k++) {
+                    const u = units[k];
+                    const err = Math.abs(d - u * T);
+                    if (err < bestErr) { bestErr = err; bestU = u; }
+                }
+
+                // Normalize error: relative + small absolute component
+                const rel = bestErr / Math.max(1, bestU * T);
+                cost += rel * rel + (bestErr / 800) * (bestErr / 800);
+                used++;
+            }
+
+            if (used > 0 && cost < bestCost) {
+                bestCost = cost;
+                bestT = T;
+            }
+        }
+
+        // Smooth updates to avoid jitter
+        const alpha = 0.25;
+        this.T = this.T ? (this.T * (1 - alpha) + bestT * alpha) : bestT;
+
+        // Validate: if fit is terrible, don't trust T for committing
+        const costPer = bestCost / Math.max(1, data.length);
+        this._TValid = (costPer < 0.20) && (this.T >= 20) && (this.T <= 600);
+    }
+
+    // --- Classification / commits ---
+    _classifyMark(durMs) {
+        const T = this.T || 120;
+        const u = durMs / T;
+
+        // Tolerance bands: dot 0.55–1.55T, dash 2.1–3.9T
+        if (u >= 0.55 && u <= 1.55) return '.';
+        if (u >= 2.1 && u <= 3.9) return '-';
+
+        // Fallback: nearest of 1 vs 3
+        if (u > 0.3 && u < 5.0) {
+            const d1 = Math.abs(u - 1);
+            const d3 = Math.abs(u - 3);
+            return (d1 <= d3) ? '.' : '-';
+        }
+
+        return null;
+    }
+
+    _handleGapCommit(gapMs) {
+        if (!this._buffer) return;
+
+        const T = this.T || 120;
+        const u = gapMs / T;
+
+        // Commit thresholds: char at 3T, word at 7T
+        // More conservative when T isn't validated yet
+        const charGate = this._TValid ? 3.0 : 4.0;
+        const wordGate = this._TValid ? 7.0 : 9.0;
+
+        if (u >= wordGate) {
+            this._decodeChar();
+            if (this.onCharDecoded) this.onCharDecoded(' ');
+            return;
+        }
+
+        if (u >= charGate) {
+            this._decodeChar();
+        }
     }
 
     _decodeChar() {
-        if (this._buffer === '') return;
+        if (!this._buffer) return;
         const char = this.MORSE_MAP[this._buffer];
         if (char && this.onCharDecoded) this.onCharDecoded(char);
         else console.log('[MorseDecoder] Unknown pattern:', this._buffer);
         this._buffer = '';
+    }
+
+    // --- UI / helpers ---
+    _samplesToMs(samples) {
+        return (samples / this.sampleRate) * 1000;
+    }
+
+    _estimateWpm() {
+        // Standard PARIS: dot duration (seconds) = 1.2 / WPM
+        const T = this.T || 120;
+        const dotSec = T / 1000;
+        if (dotSec <= 0) return 0;
+        const wpm = 1.2 / dotSec;
+        return Math.max(1, Math.min(80, wpm));
+    }
+
+    _sendLevelUpdate() {
+        if (!this.onLevelUpdate) return;
+
+        // Throttle to ~20Hz (feat is 100Hz)
+        const now = performance.now();
+        if (now - this._uiLastSentMs < 50) return;
+        this._uiLastSentMs = now;
+
+        const f = this._lastFeat || {};
+        const wpm = this._estimateWpm();
+        const T = this.T || 120;
+        const dotMs = Math.round(T);
+        const dashMs = Math.round(3 * T);
+
+        this.onLevelUpdate({
+            level: Math.max(0, Math.min(100, (f.snrDb || 0) * 3)),
+            isTone: !!f.gate,
+            peakFreq: f.f0 || 0,
+            snrDb: f.snrDb || 0,
+            tonDb: f.tonDb || 0,
+            gate: !!f.gate,
+            Ebf: f.Ebf || 0,
+            Ebs: f.Ebs || 0,
+            Ewf: f.Ewf || 0,
+            threshold: `T=${dotMs}ms (·) ${dashMs}ms (-)  WPM≈${wpm.toFixed(1)}${this._TValid ? '' : ' (calibrating)'}`,
+            buffer: this._buffer,
+            wpm
+        });
     }
 }
